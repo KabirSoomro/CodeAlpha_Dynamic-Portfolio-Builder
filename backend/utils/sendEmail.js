@@ -1,11 +1,13 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
+  // Debug: log whether credentials are loaded
+  console.log('[sendEmail] EMAIL_USER:', process.env.EMAIL_USER ? '✅ loaded' : '❌ MISSING');
+  console.log('[sendEmail] EMAIL_PASS:', process.env.EMAIL_PASS ? '✅ loaded' : '❌ MISSING');
+
   // Create a reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // true for 465
+    service: 'gmail',  // Use 'service' shorthand instead of manual host/port
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -23,7 +25,7 @@ const sendEmail = async (options) => {
   // Send the email
   const info = await transporter.sendMail(message);
 
-  console.log('Message sent: %s', info.messageId);
+  console.log('[sendEmail] ✅ Message sent:', info.messageId);
 };
 
 module.exports = sendEmail;
