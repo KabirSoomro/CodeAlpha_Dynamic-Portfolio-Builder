@@ -297,4 +297,44 @@ const updateDetails = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe, forgotPassword, resetPassword, updateDetails };
+// ── Controller: Update Password ─────────────────────────────────
+/**
+ * PUT /api/auth/updatepassword
+ * Protected route — allows a logged-in user to change their password.
+ */
+const updatePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Please provide both current and new passwords.' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long.' });
+    }
+
+    // Explicitly select password field to verify the old password
+    const user = await User.findById(req.user.id).select('+password');
+    
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Incorrect current password.' });
+    }
+
+    // Set new password (the pre-save hook will hash it)
+    user.password = newPassword;
+    await user.save();
+
+    // Automatically send back a new token to keep user logged in
+    sendTokenResponse(user, 200, res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getMe, forgotPassword, resetPassword, updateDetails, updatePassword };

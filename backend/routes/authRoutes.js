@@ -9,7 +9,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { register, login, getMe, forgotPassword, resetPassword, updateDetails } = require('../controllers/authController');
+const { register, login, getMe, forgotPassword, resetPassword, updateDetails, updatePassword } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
 
 // POST /api/auth/register — Public
@@ -33,5 +33,8 @@ router.put('/resetpassword/:resettoken', resetPassword);
 
 // PUT /api/auth/updatedetails — Protected
 router.put('/updatedetails', protect, updateDetails);
+
+// PUT /api/auth/updatepassword — Protected
+router.put('/updatepassword', protect, updatePassword);
 
 module.exports = router;

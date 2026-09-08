@@ -174,6 +174,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 4b. Handle Password Update Submission
+  const passwordForm = document.getElementById('password-form');
+  const passwordMessageDiv = document.getElementById('password-message');
+
+  function showPasswordMessage(text, type) {
+    if (!passwordMessageDiv) return;
+    passwordMessageDiv.textContent = text;
+    passwordMessageDiv.className = `form-message ${type}`;
+    if (type === 'error') {
+      passwordMessageDiv.style.color = 'var(--color-danger)';
+    } else {
+      passwordMessageDiv.style.color = 'var(--color-success)';
+    }
+    passwordMessageDiv.style.marginTop = '12px';
+    passwordMessageDiv.style.textAlign = 'center';
+  }
+
+  if (passwordForm) {
+    passwordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const token = localStorage.getItem('portfolio_token');
+      if (!token) {
+        showPasswordMessage('You are not logged in.', 'error');
+        return;
+      }
+
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (newPassword !== confirmPassword) {
+        showPasswordMessage('New passwords do not match.', 'error');
+        return;
+      }
+
+      const submitBtn = passwordForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Updating...';
+      submitBtn.disabled = true;
+      passwordMessageDiv.textContent = '';
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/updatepassword`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            currentPassword,
+            newPassword
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showPasswordMessage('Password updated successfully!', 'success');
+          passwordForm.reset();
+        } else {
+          showPasswordMessage(data.message || 'Failed to update password', 'error');
+        }
+      } catch (err) {
+        showPasswordMessage('Server error. Please try again.', 'error');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
   function showMessage(text, type) {
     if (!messageDiv) return;
     messageDiv.textContent = text;
