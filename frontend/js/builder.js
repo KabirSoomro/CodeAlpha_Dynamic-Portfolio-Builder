@@ -785,7 +785,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ── Handle Tab Navigation from URL ──
-  const urlParams = new URLSearchParams(window.location.search);
   const tabParam = urlParams.get('tab');
   if (tabParam) {
     // Wait briefly for DOM/tabs to be ready, then click
