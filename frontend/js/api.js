@@ -15,7 +15,7 @@
 // ── Configuration ─────────────────────────────────────────────
 // I read the backend URL from a constant here so I only need
 // to change it in one place when deploying to Render.
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://codealpha-dynamic-portfolio-builder.onrender.com/api';
 
 // ── Token Helpers ──────────────────────────────────────────────
 // I store the JWT in localStorage so it survives page refreshes.
