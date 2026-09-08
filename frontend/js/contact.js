@@ -1,6 +1,11 @@
 /**
  * PortfolioAI - Contact Support Logic
  * Initializes EmailJS and handles the contact modal submission.
+ *
+ * I move the modal to be a direct child of <body> on open to
+ * avoid stacking-context issues on pages like builder.html where
+ * sticky/fixed elements with z-index can trap the modal behind
+ * the page layout, making it invisible and freezing the UI.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,10 +20,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const errorDiv = document.getElementById('contact-error');
   const successDiv = document.getElementById('contact-success');
 
+  // I move the modal to be a direct child of <body> so it is
+  // never trapped inside a stacking context created by the builder
+  // layout's position:sticky / z-index / overflow:hidden rules.
+  if (contactModal && contactModal.parentElement !== document.body) {
+    document.body.appendChild(contactModal);
+  }
+
   // Close modal when clicking outside the card
   if (contactModal) {
     contactModal.addEventListener('click', (e) => {
       if (e.target === contactModal) {
+        closeContactModal();
+      }
+    });
+
+    // I also close on Escape key for better UX
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && contactModal.style.display !== 'none') {
         closeContactModal();
       }
     });
@@ -84,9 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function openContactModal() {
   const modal = document.getElementById('contact-modal');
   if (modal) {
+    // I ensure the modal is a direct child of <body> every time
+    // it opens, so even if the DOM was re-rendered, it stays on top.
+    if (modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
+
     modal.style.display = 'flex';
-    modal.style.zIndex = '99999'; // Force it to the top
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    modal.style.zIndex = '99999';
+    modal.style.position = 'fixed';
+    modal.style.inset = '0';
+    document.body.style.overflow = 'hidden';
     
     // Clear previous states safely
     const form = document.getElementById('contact-form');
