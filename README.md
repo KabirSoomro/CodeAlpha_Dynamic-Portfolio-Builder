@@ -1,10 +1,9 @@
 <div align="center">
 
-![PortfolioAI](https://img.shields.io/badge/⚡%20PortfolioAI-Next--Gen%20Portfolio%20%26%20Resume%20Builder-6366f1?style=for-the-badge&logo=sparkles&logoColor=white)
+# ⚡ PortfolioAI
 
-# ⚡ PortfolioAI — Next-Gen Dynamic Portfolio & Resume Builder
-
-### *Build. Preview. Export. Ship — All in One Place.*
+### *Next-Gen Dynamic Portfolio & Resume Builder*
+*Build. Preview. Export. Ship — All in One Place.*
 
 A **production-ready, full-stack** Portfolio & Resume Builder with Glassmorphic dark UI, AI-powered OCR resume parsing, real-time live preview, JWT authentication, 6 resume templates, and one-click PDF export.
 
@@ -15,7 +14,6 @@ A **production-ready, full-stack** Portfolio & Resume Builder with Glassmorphic 
 [![Watch on LinkedIn](https://img.shields.io/badge/👁%20Watch%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kabir-soomro)
 
 </div>
-
 
 ---
 
