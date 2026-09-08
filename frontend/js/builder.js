@@ -54,11 +54,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     state.social = { ...state.social, ...(res.portfolio.social || {}) };
   }
 
-  // ── Handle Template Selection ─────────────────────────────────
-  const templateSelector = document.getElementById('template-selector');
-  if (templateSelector) {
-    templateSelector.addEventListener('change', (e) => {
-      const templateClass = e.target.value;
+  // ── Handle Custom Template Selection ──────────────────────────
+  const templateDropdown = document.getElementById('template-dropdown');
+  const templateSelected = document.getElementById('template-selected');
+  const templateOptions = document.getElementById('template-options');
+
+  if (templateDropdown && templateSelected && templateOptions) {
+    // Toggle dropdown open/close
+    templateSelected.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = templateOptions.hasAttribute('hidden');
+      if (isHidden) {
+        templateOptions.removeAttribute('hidden');
+      } else {
+        templateOptions.setAttribute('hidden', '');
+      }
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!templateDropdown.contains(e.target)) {
+        templateOptions.setAttribute('hidden', '');
+      }
+    });
+
+    // Handle option click
+    templateOptions.addEventListener('click', (e) => {
+      const option = e.target.closest('.dropdown-option');
+      if (!option) return;
+
+      const templateClass = option.dataset.value;
+      const templateName = option.textContent;
+
+      // Update UI active state
+      templateOptions.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('active'));
+      option.classList.add('active');
+
+      // Update selected text
+      templateSelected.querySelector('span').textContent = templateName;
+
+      // Close dropdown
+      templateOptions.setAttribute('hidden', '');
+
+      // Apply logic
       state.template = templateClass;
       applyTemplate(templateClass);
       scheduleSave();
@@ -80,8 +118,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
     resumeEl.classList.add(templateClass);
 
-    if (templateSelector) {
-      templateSelector.value = templateClass;
+    // Update custom dropdown if changed programmatically (e.g., from DB load)
+    if (templateOptions && templateSelected) {
+      const targetOpt = templateOptions.querySelector(`.dropdown-option[data-value="${templateClass}"]`);
+      if (targetOpt) {
+        templateOptions.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('active'));
+        targetOpt.classList.add('active');
+        templateSelected.querySelector('span').textContent = targetOpt.textContent;
+      }
     }
   }
 

@@ -46,15 +46,21 @@
       </div>
     </div>
     <div class="nav-center" style="display:flex; align-items:center; gap: 16px;">
-      <!-- Template Selector -->
-      <select id="template-selector" class="input" style="width: 150px; padding: 4px 8px; height: 30px; font-size: 14px;" aria-label="Select Resume Template">
-        <option value="template-modern">Modern (Default)</option>
-        <option value="template-sidebar">Sidebar (Screenshot)</option>
-        <option value="template-minimal">Minimal</option>
-        <option value="template-executive">Executive</option>
-        <option value="template-creative">Creative</option>
-        <option value="template-tech">Tech Monospace</option>
-      </select>
+      <!-- Custom Template Selector -->
+      <div class="custom-dropdown" id="template-dropdown" style="width: 180px;">
+        <div class="dropdown-selected" id="template-selected">
+          <span>Modern (Default)</span>
+          <span class="dropdown-arrow">▼</span>
+        </div>
+        <div class="dropdown-options glass-card" id="template-options" hidden>
+          <div class="dropdown-option active" data-value="template-modern">Modern (Default)</div>
+          <div class="dropdown-option" data-value="template-sidebar">Sidebar (Screenshot)</div>
+          <div class="dropdown-option" data-value="template-minimal">Minimal</div>
+          <div class="dropdown-option" data-value="template-executive">Executive</div>
+          <div class="dropdown-option" data-value="template-creative">Creative</div>
+          <div class="dropdown-option" data-value="template-tech">Tech Monospace</div>
+        </div>
+      </div>
       
       <!-- Auto-save Status Indicator -->
       <div class="autosave-indicator" id="autosave-indicator" aria-live="polite" aria-label="Auto-save status">
@@ -348,9 +354,9 @@
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-  <script src="js/api.js?v=2"></script>
-  <script src="js/builder.js?v=2"></script>
-  <script src="js/ocr.js?v=2"></script>
-  <script src="js/pdf.js?v=2"></script>
+  <script src="js/api.js?v=3"></script>
+  <script src="js/builder.js?v=3"></script>
+  <script src="js/ocr.js?v=3"></script>
+  <script src="js/pdf.js?v=3"></script>
 </body>
 </html>
