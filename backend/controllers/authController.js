@@ -7,7 +7,9 @@
 // ============================================================
 
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require('../models/User');
+const sendEmail = require('../utils/sendEmail');
 
 // ── Helper: Sign JWT ──────────────────────────────────────────
 // I extract token signing into a private helper so I don't
@@ -172,4 +174,92 @@ const getMe = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe };
+// ── Controller: Forgot Password ───────────────────────────────
+/**
+ * POST /api/auth/forgotpassword
+ * @desc Generate and send a password reset token to user email
+ */
+const forgotPassword = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      // For security, do not reveal if the email exists or not
+      return res.status(200).json({ success: true, message: 'If an account exists, an email has been sent.' });
+    }
+
+    // Get reset token (this modifies the user object but doesn't save yet)
+    const resetToken = user.getResetPasswordToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    // Create reset URL (pointing to the frontend reset-password.html page)
+    // Use the FRONTEND_URL from env, default to local if not set
+    const frontendURL = process.env.FRONTEND_URL || 'http://127.0.0.1:5500';
+    const resetUrl = `${frontendURL}/reset-password.html?token=${resetToken}`;
+
+    const message = `
+      <h1>Password Reset Request</h1>
+      <p>You requested a password reset for your CodeAlpha Portfolio Builder account.</p>
+      <p>Please click the link below to reset your password:</p>
+      <a href="${resetUrl}" target="_blank">${resetUrl}</a>
+      <p>If you did not request this, please ignore this email. This link will expire in 10 minutes.</p>
+    `;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Password Reset Request',
+        html: message,
+      });
+
+      res.status(200).json({ success: true, message: 'Email sent successfully' });
+    } catch (err) {
+      console.error(err);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      return res.status(500).json({ success: false, message: 'Email could not be sent' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ── Controller: Reset Password ────────────────────────────────
+/**
+ * PUT /api/auth/resetpassword/:resettoken
+ * @desc Reset password using token
+ */
+const resetPassword = async (req, res, next) => {
+  try {
+    // Get hashed token
+    const resetPasswordToken = crypto
+      .createHash('sha256')
+      .update(req.params.resettoken)
+      .digest('hex');
+
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: 'Invalid or expired token' });
+    }
+
+    // Set new password
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    // Send token response to automatically log them in
+    sendTokenResponse(user, 200, res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getMe, forgotPassword, resetPassword };

@@ -9,7 +9,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { register, login, getMe } = require('../controllers/authController');
+const { register, login, getMe, forgotPassword, resetPassword } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
 
 // POST /api/auth/register — Public
@@ -24,5 +24,11 @@ router.post('/login', login);
 // is guarded — unauthenticated requests are rejected before
 // the controller function ever runs.
 router.get('/me', protect, getMe);
+
+// POST /api/auth/forgotpassword — Public
+router.post('/forgotpassword', forgotPassword);
+
+// PUT /api/auth/resetpassword/:resettoken — Public
+router.put('/resetpassword/:resettoken', resetPassword);
 
 module.exports = router;

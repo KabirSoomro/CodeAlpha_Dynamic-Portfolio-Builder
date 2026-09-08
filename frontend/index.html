@@ -114,6 +114,10 @@
               />
               <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="login-password">👁</button>
             </div>
+            </div>
+            <div style="text-align: right; margin-top: 8px;">
+              <a href="#" id="forgot-link" class="forgot-link" style="color: var(--color-accent); font-size: 0.8rem; text-decoration: none;">Forgot Password?</a>
+            </div>
           </div>
 
           <!-- Error / Success Message -->
@@ -189,6 +193,37 @@
             <span class="btn-text">Create My Account</span>
             <span class="btn-spinner" aria-hidden="true"></span>
           </button>
+        </form>
+      </div>
+
+      <!-- ── Forgot Password Panel ── -->
+      <div id="panel-forgot" class="auth-panel" role="tabpanel" style="display: none;">
+        <h3 style="margin-top: 0; color: #fff; text-align: center; font-weight: 600;">Reset Password</h3>
+        <p style="color: rgba(255,255,255,0.7); text-align: center; font-size: 0.85rem; margin-bottom: 24px;">Enter your email to receive a reset link.</p>
+        <form id="forgot-form" novalidate>
+          <div class="form-group">
+            <label for="forgot-email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉️</span>
+              <input
+                type="email"
+                id="forgot-email"
+                name="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+          </div>
+
+          <div id="forgot-message" class="form-message" role="alert" aria-live="polite"></div>
+
+          <button type="submit" id="forgot-btn" class="btn btn-primary btn-full">
+            <span class="btn-text">Send Reset Link</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+          <div style="text-align: center; margin-top: 16px;">
+            <a href="#" id="back-to-login-link" style="color: rgba(255,255,255,0.7); font-size: 0.85rem; text-decoration: none;">&larr; Back to Login</a>
+          </div>
         </form>
       </div>
 

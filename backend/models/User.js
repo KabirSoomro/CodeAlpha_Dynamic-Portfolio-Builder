@@ -9,6 +9,7 @@
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 // I am defining the schema with timestamps:true so Mongoose
 // automatically adds createdAt and updatedAt fields for me.
@@ -51,6 +52,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
   },
   { timestamps: true }
 );
@@ -75,6 +79,26 @@ UserSchema.pre('save', async function (next) {
 // can verify a login attempt without importing bcrypt themselves.
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// ── Instance Method: getResetPasswordToken ────────────────────
+// Generates a token, hashes it, and stores it in the database.
+UserSchema.methods.getResetPasswordToken = function () {
+  // Generate random 20 byte token
+  const resetToken = crypto.randomBytes(20).toString('hex');
+
+  // Hash the token and set it to resetPasswordToken field
+  // Using sha256 because it is fast and secure for single-use tokens
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // Set expiration to 10 minutes from now
+  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+
+  // Return the original un-hashed token to send to the user's email
+  return resetToken;
 };
 
 // ── Index ──────────────────────────────────────────────────────

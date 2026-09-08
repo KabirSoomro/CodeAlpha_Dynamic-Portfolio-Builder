@@ -21,12 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const loginForm    = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
+  const forgotForm   = document.getElementById('forgot-form');
 
   const loginMsg     = document.getElementById('login-message');
   const registerMsg  = document.getElementById('register-message');
+  const forgotMsg    = document.getElementById('forgot-message');
 
   const loginBtn     = document.getElementById('login-btn');
   const registerBtn  = document.getElementById('register-btn');
+  const forgotBtn    = document.getElementById('forgot-btn');
+  const forgotLink   = document.getElementById('forgot-link');
+  const backToLoginLink = document.getElementById('back-to-login-link');
+  const panelForgot  = document.getElementById('panel-forgot');
 
   const regPassword  = document.getElementById('reg-password');
   const strengthFill = document.getElementById('strength-fill');
@@ -36,6 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // I use a data attribute on the wrapper to drive the CSS
   // sliding indicator instead of manually moving a DOM element.
   function switchTab(activeTab) {
+    if (activeTab === 'forgot') {
+      panelLogin.classList.remove('active');
+      panelRegister.classList.remove('active');
+      panelForgot.style.display = 'block';
+      setTimeout(() => panelForgot.classList.add('active'), 10);
+      tabsWrapper.style.display = 'none'; // hide tabs for forgot password
+      return;
+    } else {
+      panelForgot.classList.remove('active');
+      setTimeout(() => panelForgot.style.display = 'none', 300);
+      tabsWrapper.style.display = 'flex';
+    }
+
     const isLogin = activeTab === 'login';
 
     tabLogin.classList.toggle('active', isLogin);
@@ -55,10 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loginMsg.className = 'form-message';
     registerMsg.textContent = '';
     registerMsg.className = 'form-message';
+    forgotMsg.textContent = '';
+    forgotMsg.className = 'form-message';
   }
 
   tabLogin.addEventListener('click', () => switchTab('login'));
   tabRegister.addEventListener('click', () => switchTab('register'));
+  forgotLink.addEventListener('click', (e) => { e.preventDefault(); switchTab('forgot'); });
+  backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); switchTab('login'); });
 
   // ── Password Visibility Toggle ────────────────────────────────
   document.querySelectorAll('.toggle-password').forEach((btn) => {
@@ -181,6 +204,34 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
     } else {
       showMessage(registerMsg, data?.message || 'Registration failed.');
+    }
+  });
+
+  // ── Forgot Password Form Handler ──────────────────────────────
+  forgotForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('forgot-email').value.trim();
+
+    if (!email) {
+      return showMessage(forgotMsg, 'Please enter your email address.');
+    }
+
+    setLoading(forgotBtn, true);
+    forgotMsg.textContent = '';
+
+    const data = await apiFetch('/auth/forgotpassword', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+
+    setLoading(forgotBtn, false);
+
+    if (data?.success) {
+      showMessage(forgotMsg, '✅ Password reset link sent to your email.', 'success');
+      document.getElementById('forgot-email').value = '';
+    } else {
+      showMessage(forgotMsg, data?.message || 'Failed to send reset link.');
     }
   });
 
