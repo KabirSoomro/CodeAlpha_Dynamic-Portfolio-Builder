@@ -61,6 +61,44 @@
   --shadow-lg:          0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.05);
   --shadow-glow:        0 0 10px rgba(0,0,0,0.05);
   --glass-blur:         blur(8px);
+}
+
+[data-theme="dark"] {
+  /* Colors */
+  --color-bg:           #0a0a0c; /* Cyber-Matrix Dark */
+  --color-bg-secondary: #111116;
+  --color-surface:      rgba(255, 255, 255, 0.03); /* Frosted Glass */
+  --color-surface-hover:rgba(255, 255, 255, 0.06);
+  --color-border:       rgba(255, 255, 255, 0.1);
+  --color-border-strong:rgba(255, 255, 255, 0.2);
+
+  /* Accent — Cyber Neon Cyan to Purple */
+  --color-accent:       #00f2fe; /* Cyber Cyan */
+  --color-accent-alt:   #4facfe; /* Deep Cyan/Blue */
+  --color-accent-light: rgba(0, 242, 254, 0.15);
+  --color-accent-glow:  rgba(0, 242, 254, 0.6);
+
+  /* Gradients */
+  --gradient-primary:   linear-gradient(135deg, var(--color-accent), var(--color-accent-alt));
+  
+  /* Text */
+  --color-text:         #fafafa;
+  --color-text-muted:   #a1a1aa;
+  --color-text-subtle:  #71717a;
+
+  /* Semantic */
+  --color-success:      #10b981;
+  --color-warning:      #f59e0b;
+  --color-danger:       #ef4444;
+  --color-info:         #3b82f6;
+
+  /* Shadows */
+  --shadow-sm:          0 2px 4px rgba(0,0,0,0.4);
+  --shadow-md:          0 8px 16px rgba(0,0,0,0.6);
+  --shadow-lg:          0 16px 32px rgba(0,0,0,0.8);
+  --shadow-glow:        0 0 25px var(--color-accent-glow);
+  --glass-blur:         blur(16px) saturate(120%);
+}
 
   /* Transitions */
   --transition-fast:   150ms ease;
@@ -126,7 +164,98 @@ a:hover { color: #8e89ff; }
   border: 0;
 }
 
-/* Background orbs removed for minimal light theme */
+/* ── Animated Backgrounds (Light & Dark) ──────────────────────── */
+.bg-animations {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Dark Mode Orbs */
+[data-theme="dark"] .bg-orbs .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: orb-float 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+[data-theme="dark"] .bg-orbs .orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, transparent 70%); /* Purple */
+  top: -200px; left: -150px;
+  animation-duration: 20s;
+}
+
+[data-theme="dark"] .bg-orbs .orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%); /* Cyan */
+  bottom: -100px; right: 10%;
+  animation-duration: 25s;
+  animation-delay: -8s;
+}
+
+[data-theme="dark"] .bg-orbs .orb-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%); /* Emerald */
+  top: 40%; left: 60%;
+  animation-duration: 15s;
+  animation-delay: -4s;
+}
+
+@keyframes orb-float {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(40px, -60px) scale(1.05); }
+  66%  { transform: translate(-30px, 40px) scale(0.95); }
+  100% { transform: translate(60px, 20px) scale(1.08); }
+}
+
+/* Light Mode Waves */
+[data-theme="light"] .bg-waves {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--color-bg) 0%, #e2e8f0 100%);
+}
+
+[data-theme="light"] .bg-waves::before,
+[data-theme="light"] .bg-waves::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(10, 102, 194, 0.03)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+  background-size: cover;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  animation: wave-flow 25s linear infinite alternate;
+}
+
+[data-theme="light"] .bg-waves::after {
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(0, 65, 130, 0.03)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+  animation: wave-flow-reverse 20s linear infinite alternate;
+  bottom: -20px;
+}
+
+@keyframes wave-flow {
+  0%   { transform: translateX(0) scale(1); }
+  100% { transform: translateX(-5%) scale(1.05); }
+}
+
+@keyframes wave-flow-reverse {
+  0%   { transform: translateX(0) scale(1); }
+  100% { transform: translateX(5%) scale(1.05); }
+}
+
+/* Hide opposite theme backgrounds */
+[data-theme="light"] .bg-orbs,
+[data-theme="dark"] .bg-waves {
+  display: none;
+}
 
 /* ── Glassmorphism Card ──────────────────────────────────────── */
 .glass-card {

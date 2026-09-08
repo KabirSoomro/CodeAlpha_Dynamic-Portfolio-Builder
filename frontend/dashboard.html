@@ -23,15 +23,21 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
+  
+  <!-- Theme Controller -->
+  <script src="js/theme.js"></script>
 </head>
 <body class="dashboard-page">
 
-  <!-- Animated Background -->
-  <div class="bg-orbs" aria-hidden="true">
+  <!-- Animated Background Orbs (Dark Mode) -->
+  <div class="bg-animations bg-orbs" aria-hidden="true">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
   </div>
+
+  <!-- Animated Background Waves (Light Mode) -->
+  <div class="bg-animations bg-waves" aria-hidden="true"></div>
 
   <!-- ── Navbar ── -->
   <nav class="navbar glass-card" role="navigation" aria-label="Main navigation">
@@ -40,6 +46,7 @@
       <span class="logo-text">PortfolioAI</span>
     </div>
     <div class="nav-actions">
+      <button class="btn btn-ghost btn-sm theme-toggle-btn" aria-label="Toggle Theme">🌙</button>
       <span class="nav-user-greeting">Hello, <strong id="user-name-nav">...</strong></span>
       <button id="logout-btn" class="btn btn-ghost btn-sm" aria-label="Logout">
         Logout

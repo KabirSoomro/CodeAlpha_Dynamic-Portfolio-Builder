@@ -34,8 +34,21 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css?v=2" />
   <link rel="stylesheet" href="css/builder.css?v=2" />
+  
+  <!-- Theme Controller -->
+  <script src="js/theme.js"></script>
 </head>
 <body class="builder-page">
+
+  <!-- Animated Background Orbs (Dark Mode) -->
+  <div class="bg-animations bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Animated Background Waves (Light Mode) -->
+  <div class="bg-animations bg-waves" aria-hidden="true"></div>
 
   <!-- ── Top Navbar ── -->
   <nav class="builder-navbar glass-card" role="navigation" aria-label="Builder navigation">
@@ -70,7 +83,7 @@
       </div>
     </div>
     <div class="nav-right">
-      <button class="btn btn-ghost btn-sm" id="theme-color-btn" aria-label="Change theme color">🎨 Theme</button>
+      <button class="btn btn-ghost btn-sm theme-toggle-btn" id="theme-color-btn" aria-label="Toggle Theme">🌙</button>
       <button class="btn btn-primary btn-sm" id="download-pdf-btn" aria-label="Download PDF">
         📄 Download PDF
       </button>

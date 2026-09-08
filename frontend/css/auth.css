@@ -200,3 +200,22 @@
   color: var(--color-text);
   transform: translateY(-2px);
 }
+
+/* ── Dark Mode Overrides ─────────────────────────────────────── */
+[data-theme="dark"] .auth-tabs {
+  background: rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] .tab-indicator {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-alt));
+  box-shadow: 0 4px 15px var(--color-accent-glow);
+}
+
+[data-theme="dark"] .strength-bar {
+  background: rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .pill {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(4px);
+}

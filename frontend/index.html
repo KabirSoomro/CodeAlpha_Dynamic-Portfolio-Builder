@@ -35,26 +35,33 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/auth.css" />
+  
+  <!-- Theme Controller -->
+  <script src="js/theme.js"></script>
 </head>
 <body class="auth-page">
 
-  <!-- Animated Background Orbs -->
-  <div class="bg-orbs" aria-hidden="true">
+  <!-- Animated Background Orbs (Dark Mode) -->
+  <div class="bg-animations bg-orbs" aria-hidden="true">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
   </div>
 
+  <!-- Animated Background Waves (Light Mode) -->
+  <div class="bg-animations bg-waves" aria-hidden="true"></div>
+
   <!-- ── Main Auth Container ── -->
   <main class="auth-container" role="main">
 
-    <!-- Brand Logo -->
-    <div class="brand-logo">
-      <span class="logo-icon">⚡</span>
-      <span class="logo-text">PortfolioAI</span>
-    </div>
+        <!-- Brand / Logo -->
+        <div class="brand-logo" aria-label="PortfolioAI Logo">
+          <span class="logo-icon">⚡</span>
+          <span>PortfolioAI</span>
+        </div>
+        <button class="btn btn-ghost btn-sm theme-toggle-btn" aria-label="Toggle Theme" style="position: absolute; right: 24px; top: 24px;">🌙</button>
 
-    <!-- Hero Headline -->
+        <!-- Dynamic Header Text -->
     <div class="hero-text">
       <h1>Build Your Dream Portfolio</h1>
       <p>AI-powered • Real-time preview • ATS-optimized PDF export</p>
