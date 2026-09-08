@@ -125,7 +125,9 @@ async function apiFetch(endpoint, options = {}) {
 
     // If the backend returns 401 from a protected route, the
     // token is invalid or expired. I clear auth and redirect.
-    if (response.status === 401) {
+    // I only redirect if the endpoint is not login/register, 
+    // otherwise the login page itself would refresh on a wrong password!
+    if (response.status === 401 && !endpoint.startsWith('/auth/login') && !endpoint.startsWith('/auth/register')) {
       Auth.clear();
       window.location.href = 'index.html';
       return;
