@@ -85,12 +85,18 @@ function openContactModal() {
   const modal = document.getElementById('contact-modal');
   if (modal) {
     modal.style.display = 'flex';
+    modal.style.zIndex = '99999'; // Force it to the top
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
-    // Clear previous states
-    document.getElementById('contact-form').reset();
-    document.getElementById('contact-error').style.display = 'none';
-    document.getElementById('contact-success').style.display = 'none';
+    // Clear previous states safely
+    const form = document.getElementById('contact-form');
+    if (form && typeof form.reset === 'function') form.reset();
+    
+    const errDiv = document.getElementById('contact-error');
+    if (errDiv) errDiv.style.display = 'none';
+    
+    const succDiv = document.getElementById('contact-success');
+    if (succDiv) succDiv.style.display = 'none';
   }
 }
 
