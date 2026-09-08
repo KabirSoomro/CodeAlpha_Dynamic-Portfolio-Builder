@@ -751,31 +751,38 @@ document.addEventListener('DOMContentLoaded', async () => {
   const applyThemeBtn = document.getElementById('apply-theme-btn');
   const customColor = document.getElementById('custom-color');
 
-  themeColorBtn.addEventListener('click', () => {
-    themeModal.hidden = false;
-  });
+  if (themeColorBtn) {
+    themeColorBtn.addEventListener('click', () => {
+      themeModal.hidden = false;
+    });
 
-  themeModal.addEventListener('click', (e) => {
-    if (e.target === themeModal) themeModal.hidden = true;
-  });
+    themeModal.addEventListener('click', (e) => {
+      if (e.target === themeModal) themeModal.hidden = true;
+    });
 
-  document.getElementById('color-swatches').addEventListener('click', (e) => {
-    const swatch = e.target.closest('.swatch');
-    if (!swatch) return;
+    const colorSwatches = document.getElementById('color-swatches');
+    if (colorSwatches) {
+      colorSwatches.addEventListener('click', (e) => {
+        const swatch = e.target.closest('.swatch');
+        if (!swatch) return;
 
-    document.querySelectorAll('.swatch').forEach((s) => s.classList.remove('active'));
-    swatch.classList.add('active');
-    customColor.value = swatch.dataset.color;
-    // I preview the color in real-time when a swatch is clicked
-    applyThemeColor(swatch.dataset.color);
-  });
+        document.querySelectorAll('.swatch').forEach((s) => s.classList.remove('active'));
+        swatch.classList.add('active');
+        customColor.value = swatch.dataset.color;
+        // I preview the color in real-time when a swatch is clicked
+        applyThemeColor(swatch.dataset.color);
+      });
+    }
 
-  applyThemeBtn.addEventListener('click', () => {
-    state.themeColor = customColor.value;
-    applyThemeColor(state.themeColor);
-    themeModal.hidden = true;
-    scheduleSave();
-  });
+    if (applyThemeBtn) {
+      applyThemeBtn.addEventListener('click', () => {
+        state.themeColor = customColor.value;
+        applyThemeColor(state.themeColor);
+        themeModal.hidden = true;
+        scheduleSave();
+      });
+    }
+  }
 
   function applyThemeColor(color) {
     document.documentElement.style.setProperty('--color-accent', color);
