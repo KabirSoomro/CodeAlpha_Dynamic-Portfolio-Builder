@@ -50,14 +50,28 @@
   <!-- Animated Background Waves (Light Mode) -->
   <div class="bg-animations bg-waves" aria-hidden="true"></div>
 
-  <!-- ── Top Navbar ── -->
-  <nav class="builder-navbar glass-card" role="navigation" aria-label="Builder navigation">
+  <!-- ── Main Navbar ── -->
+  <nav class="navbar glass-card" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">PortfolioAI</span>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-user-container" style="display: flex; align-items: center; gap: 8px;">
+        <img id="nav-avatar" src="" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; display: none;">
+        <span class="nav-user-greeting">Hello, <strong id="user-name-nav">...</strong></span>
+      </div>
+      <button class="btn btn-ghost btn-sm theme-toggle-btn" aria-label="Toggle Theme">🌙</button>
+      <button id="logout-btn" class="btn btn-ghost btn-sm" aria-label="Logout">
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Top Toolbar ── -->
+  <nav class="builder-navbar glass-card" role="navigation" aria-label="Builder tools">
     <div class="nav-left">
       <a href="dashboard.html" class="btn btn-ghost btn-sm" aria-label="Back to dashboard">← Dashboard</a>
-      <div class="nav-brand-small">
-        <span class="logo-icon">⚡</span>
-        <span>PortfolioAI Builder</span>
-      </div>
     </div>
     <div class="nav-center" style="display:flex; align-items:center; gap: 16px;">
       <!-- Custom Template Selector -->
@@ -83,7 +97,6 @@
       </div>
     </div>
     <div class="nav-right">
-      <button class="btn btn-ghost btn-sm theme-toggle-btn" id="theme-color-btn" aria-label="Toggle Theme">🌙</button>
       <button class="btn btn-primary btn-sm" id="download-pdf-btn" aria-label="Download PDF">
         📄 Download PDF
       </button>
