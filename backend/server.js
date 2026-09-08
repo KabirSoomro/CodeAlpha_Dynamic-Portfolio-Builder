@@ -51,7 +51,12 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // I allow requests with no origin (e.g., Postman, curl, mobile apps)
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) return callback(null, true);
+
+      // Allow any *.vercel.app subdomain (covers all preview/prod URLs)
+      if (origin.endsWith('.vercel.app')) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error(`CORS policy blocked origin: ${origin}`));
