@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nameInput = document.getElementById('settings-name');
   const emailInput = document.getElementById('settings-email');
   const avatarUpload = document.getElementById('avatar-upload');
+  const removeAvatarBtn = document.getElementById('remove-avatar-btn'); // New remove button
   const avatarPreview = document.getElementById('settings-avatar-preview');
   const avatarPlaceholder = document.getElementById('settings-avatar-placeholder');
   const messageDiv = document.getElementById('settings-message');
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
           avatarPreview.style.display = 'block';
           avatarPlaceholder.style.display = 'none';
         } else {
+          currentAvatarBase64 = null;
           avatarPreview.style.display = 'none';
           avatarPlaceholder.style.display = 'flex';
         }
@@ -85,13 +87,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 3b. Handle Remove Avatar
+  if (removeAvatarBtn) {
+    removeAvatarBtn.addEventListener('click', () => {
+      currentAvatarBase64 = null;
+      avatarUpload.value = '';
+      avatarPreview.style.display = 'none';
+      avatarPreview.src = '';
+      avatarPlaceholder.style.display = 'flex';
+    });
+  }
+
   // 4. Handle Form Submission
   if (settingsForm) {
     settingsForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const token = localStorage.getItem('token');
-      if (!token) return;
+      const token = localStorage.getItem('portfolio_token');
+      if (!token) {
+        showMessage('You are not logged in.', 'error');
+        return;
+      }
 
       const submitBtn = settingsForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.textContent;
@@ -99,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = true;
 
       try {
-        const response = await fetch('/api/auth/updatedetails', {
+        const response = await fetch(`${API_BASE_URL}/auth/updatedetails`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -122,9 +138,14 @@ document.addEventListener('DOMContentLoaded', () => {
           
           // Update UI
           if (navName) navName.textContent = data.user.name;
-          if (navAvatar && data.user.avatar) {
-            navAvatar.src = data.user.avatar;
-            navAvatar.style.display = 'block';
+          if (navAvatar) {
+            if (data.user.avatar) {
+              navAvatar.src = data.user.avatar;
+              navAvatar.style.display = 'block';
+            } else {
+              navAvatar.style.display = 'none';
+              navAvatar.src = '';
+            }
           }
           
           // Optional: automatically close modal after a moment
@@ -157,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!messageDiv) return;
     messageDiv.textContent = text;
     messageDiv.className = `form-message ${type}`;
-    // Add success/error colors explicitly for inline style since auth.css might not cover it fully here
     if (type === 'error') {
       messageDiv.style.color = 'var(--color-danger)';
     } else {
