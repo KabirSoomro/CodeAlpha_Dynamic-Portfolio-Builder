@@ -24,9 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Open Modal and populate current user data
   if (openSettingsBtn) {
     openSettingsBtn.addEventListener('click', () => {
-      const userStr = localStorage.getItem('user');
-      if (userStr) {
-        const user = JSON.parse(userStr);
+      const user = Auth.getUser();
+      if (user) {
         nameInput.value = user.name || '';
         emailInput.value = user.email || '';
         
@@ -133,8 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.success) {
           showMessage('Profile updated successfully!', 'success');
           
-          // Update local storage
-          localStorage.setItem('user', JSON.stringify(data.user));
+          // Update local storage (using Auth helper for consistent key)
+          Auth.setUser(data.user);
           
           // Update UI
           if (navName) navName.textContent = data.user.name;
@@ -165,9 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Set initial UI state for avatar in navbar if exists
-  const storedUser = localStorage.getItem('user');
+  const storedUser = Auth.getUser();
   if (storedUser && navAvatar) {
-    const user = JSON.parse(storedUser);
+    const user = storedUser;
     if (user.avatar) {
       navAvatar.src = user.avatar;
       navAvatar.style.display = 'block';

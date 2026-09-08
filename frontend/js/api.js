@@ -62,6 +62,9 @@ const Auth = {
   clear() {
     localStorage.removeItem('portfolio_token');
     localStorage.removeItem('portfolio_user');
+    // I also remove the legacy 'user' key in case it was set by
+    // an older version of settings.js to prevent stale avatar data.
+    localStorage.removeItem('user');
   },
 
   /** I check whether the user appears to be logged in. */
