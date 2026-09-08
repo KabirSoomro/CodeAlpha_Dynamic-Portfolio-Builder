@@ -47,7 +47,10 @@
     </div>
     <div class="nav-actions">
       <button class="btn btn-ghost btn-sm theme-toggle-btn" aria-label="Toggle Theme">🌙</button>
-      <span class="nav-user-greeting">Hello, <strong id="user-name-nav">...</strong></span>
+      <div class="nav-user-container" style="display: flex; align-items: center; gap: 8px;">
+        <img id="nav-avatar" src="" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; display: none;">
+        <span class="nav-user-greeting">Hello, <strong id="user-name-nav">...</strong></span>
+      </div>
       <button id="logout-btn" class="btn btn-ghost btn-sm" aria-label="Logout">
         Logout
       </button>
@@ -63,9 +66,14 @@
         <h1 id="welcome-heading">Welcome back! 👋</h1>
         <p class="subtitle">Your portfolio is ready to impress. Keep it updated!</p>
       </div>
-      <a href="builder.html" class="btn btn-primary" id="open-builder-btn">
-        <span>✏️</span> Open Builder
-      </a>
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-secondary" id="open-settings-btn">
+          <span>⚙️</span> Settings
+        </button>
+        <a href="builder.html" class="btn btn-primary" id="open-builder-btn">
+          <span>✏️</span> Open Builder
+        </a>
+      </div>
     </header>
 
     <!-- ── Stats Cards ── -->
@@ -187,8 +195,45 @@
     </div>
   </div>
 
+  <!-- ── Settings Modal ── -->
+  <div class="modal-overlay" id="settings-modal" aria-hidden="true">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2>Profile Settings</h2>
+        <button class="close-modal-btn" id="close-settings-btn" aria-label="Close modal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="settings-form">
+          <div class="avatar-upload-container">
+            <img id="settings-avatar-preview" src="" alt="Profile Picture" style="display: none;">
+            <div class="avatar-placeholder" id="settings-avatar-placeholder">👤</div>
+            <label for="avatar-upload" class="btn btn-sm btn-secondary">Upload Picture</label>
+            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+          </div>
+          
+          <div class="form-group">
+            <label for="settings-name">Full Name</label>
+            <input type="text" id="settings-name" class="form-input" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="settings-email">Email Address</label>
+            <input type="email" id="settings-email" class="form-input" required>
+          </div>
+          
+          <div id="settings-message" class="form-message"></div>
+          
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--space-md);">
+            Save Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
-  <script src="js/api.js?v=5"></script>
-  <script src="js/dashboard.js?v=2"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/settings.js"></script>
 </body>
 </html>

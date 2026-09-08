@@ -262,4 +262,39 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe, forgotPassword, resetPassword };
+// ── Controller: Update User Details ────────────────────────────
+/**
+ * PUT /api/auth/updatedetails
+ * Protected route — updates user name, email, and avatar.
+ */
+const updateDetails = async (req, res, next) => {
+  try {
+    const fieldsToUpdate = {};
+    if (req.body.name) fieldsToUpdate.name = req.body.name;
+    if (req.body.email) fieldsToUpdate.email = req.body.email.toLowerCase();
+    if (req.body.avatar) fieldsToUpdate.avatar = req.body.avatar;
+
+    const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ success: false, message: 'Email already exists.' });
+    }
+    next(error);
+  }
+};
+
+module.exports = { register, login, getMe, forgotPassword, resetPassword, updateDetails };
