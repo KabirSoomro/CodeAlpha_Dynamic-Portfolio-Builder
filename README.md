@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/PortfolioAI-Next--Gen%20Builder-6366f1?style=for-the-badge&logo=sparkles&logoColor=white" alt="PortfolioAI" />
+![PortfolioAI](https://img.shields.io/badge/⚡%20PortfolioAI-Next--Gen%20Portfolio%20%26%20Resume%20Builder-6366f1?style=for-the-badge&logo=sparkles&logoColor=white)
 
 # ⚡ PortfolioAI — Next-Gen Dynamic Portfolio & Resume Builder
 
@@ -11,19 +11,11 @@ A **production-ready, full-stack** Portfolio & Resume Builder with Glassmorphic 
 <br/>
 
 [![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Visit%20Now-6366f1?style=for-the-badge&logo=vercel&logoColor=white)](https://code-alpha-dynamic-portfolio-builder.vercel.app)
-[![Watch on YouTube](https://img.shields.io/badge/▶%20Watch%20on%20YouTube-Demo%20Video-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@KabeerSoomro)
-[![Watch on LinkedIn](https://img.shields.io/badge/👁%20Watch%20on%20LinkedIn-Demo%20Post-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kabir-soomro)
-[![LinkedIn Profile](https://img.shields.io/badge/👤%20LinkedIn%20Profile-Kabeer%20Soomro-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kabir-soomro)
-[![GitHub Repo](https://img.shields.io/badge/⭐%20GitHub%20Repo-Star%20It!-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/KabirSoomro/CodeAlpha_Dynamic-Portfolio-Builder)
-
-<br/>
-
-![CodeAlpha](https://img.shields.io/badge/Internship-CodeAlpha-FF6B35?style=flat-square&logo=briefcase&logoColor=white)
-![Task](https://img.shields.io/badge/Task-Dynamic%20Portfolio%20Builder-6366f1?style=flat-square)
-![Status](https://img.shields.io/badge/Status-Live%20%26%20Deployed-22c55e?style=flat-square&logo=checkmarx&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+[![Watch on YouTube](https://img.shields.io/badge/▶%20Watch%20on%20YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@KabeerSoomro)
+[![Watch on LinkedIn](https://img.shields.io/badge/👁%20Watch%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kabir-soomro)
 
 </div>
+
 
 ---
 
