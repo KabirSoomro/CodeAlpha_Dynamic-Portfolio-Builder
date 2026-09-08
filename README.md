@@ -31,36 +31,6 @@ A **production-ready, full-stack** Portfolio & Resume Builder with Glassmorphic 
 
 </div>
 
----
-
-## 🎥 Demo & Showcase
-
-<div align="center">
-
-| Platform | Link | Description |
-|----------|------|-------------|
-| [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@KabeerSoomro) | [▶ Watch Demo](https://www.youtube.com/@KabeerSoomro) | Full project walkthrough video |
-| [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kabir-soomro) | [👁 Watch on LinkedIn](https://www.linkedin.com/in/kabir-soomro) | Project showcase post |
-| [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://code-alpha-dynamic-portfolio-builder.vercel.app) | [🌐 Live Demo](https://code-alpha-dynamic-portfolio-builder.vercel.app) | Try it live right now |
-
-</div>
-
----
-
-## 👨‍💻 Developer
-
-<div align="center">
-
-**Kabeer Soomro**
-*Full Stack Developer & CodeAlpha Intern*
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Kabeer%20Soomro-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kabir-soomro)
-[![GitHub](https://img.shields.io/badge/GitHub-KabirSoomro-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/KabirSoomro)
-
-</div>
-
----
-
 ## ✨ Key Features
 
 <div align="center">
@@ -113,17 +83,7 @@ A **production-ready, full-stack** Portfolio & Resume Builder with Glassmorphic 
 
 </div>
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Frontend | HTML5, CSS3 (Glassmorphism), Vanilla JS ES6+ | UI & interactivity |
-| Backend | Node.js v18+, Express.js | REST API server |
-| Database | MongoDB Atlas + Mongoose ODM | Data persistence |
-| Auth | JWT + bcryptjs | Secure sessions |
-| Security | Helmet.js, CORS | HTTP hardening |
-| OCR | Tesseract.js v5 | Resume image parsing |
-| PDF Export | html2pdf.js | ATS-friendly PDF generation |
-| Email | EmailJS | Contact form & password reset |
-| Drag & Drop | SortableJS | Section reordering |
+
 
 ---
 
