@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       builder.html — Split-Screen Resume Builder
+       This is the core feature page. I split it into two columns:
+       Left  = scrollable input forms (the "editor")
+       Right = sticky live preview (the "canvas")
+
+       I also include the OCR upload widget at the top of the
+       left column so users can import an old resume instantly.
+  ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Builder — PortfolioAI</title>
+  <meta name="description" content="Build your resume with AI-powered OCR parsing and live real-time preview. Export as ATS-friendly PDF." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- html2pdf.js (CDN) — I load this in <head> so it's ready when the
+       user clicks "Download PDF". Deferred loading would cause a flash. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+
+  <!-- Tesseract.js (CDN) — OCR engine for image-to-text resume parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/builder.css" />
+</head>
+<body class="builder-page">
+
+  <!-- ── Top Navbar ── -->
+  <nav class="builder-navbar glass-card" role="navigation" aria-label="Builder navigation">
+    <div class="nav-left">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm" aria-label="Back to dashboard">← Dashboard</a>
+      <div class="nav-brand-small">
+        <span class="logo-icon">⚡</span>
+        <span>PortfolioAI Builder</span>
+      </div>
+    </div>
+    <div class="nav-center" style="display:flex; align-items:center; gap: 16px;">
+      <!-- Template Selector -->
+      <select id="template-selector" class="input" style="width: 150px; padding: 4px 8px; height: 30px; font-size: 14px;" aria-label="Select Resume Template">
+        <option value="template-modern">Modern (Default)</option>
+        <option value="template-sidebar">Sidebar (Screenshot)</option>
+        <option value="template-minimal">Minimal</option>
+        <option value="template-executive">Executive</option>
+        <option value="template-creative">Creative</option>
+        <option value="template-tech">Tech Monospace</option>
+      </select>
+      
+      <!-- Auto-save Status Indicator -->
+      <div class="autosave-indicator" id="autosave-indicator" aria-live="polite" aria-label="Auto-save status">
+        <span class="save-dot" id="save-dot"></span>
+        <span id="save-status-text">All changes saved</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn-ghost btn-sm" id="theme-color-btn" aria-label="Change theme color">🎨 Theme</button>
+      <button class="btn btn-primary btn-sm" id="download-pdf-btn" aria-label="Download PDF">
+        📄 Download PDF
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── OCR Upload Banner ── -->
+  <section class="ocr-banner glass-card" id="ocr-banner" aria-label="AI Resume Import">
+    <div class="ocr-content">
+      <div class="ocr-icon" aria-hidden="true">🤖</div>
+      <div class="ocr-text">
+        <h2>AI Resume Import</h2>
+        <p>Upload a photo or screenshot of your old resume — I'll extract the text and fill your fields automatically.</p>
+      </div>
+      <label for="ocr-file-input" class="btn btn-secondary" id="ocr-upload-label">
+        📸 Upload Resume Image
+      </label>
+      <input
+        type="file"
+        id="ocr-file-input"
+        accept="image/*"
+        aria-label="Upload resume image for OCR parsing"
+        style="display:none"
+      />
+    </div>
+
+    <!-- OCR Progress -->
+    <div class="ocr-progress" id="ocr-progress" hidden>
+      <div class="ocr-progress-bar">
+        <div class="ocr-progress-fill" id="ocr-progress-fill"></div>
+      </div>
+      <p id="ocr-progress-text">Initialising OCR engine...</p>
+    </div>
+
+    <!-- OCR Result Preview -->
+    <div class="ocr-result" id="ocr-result" hidden>
+      <h4>Extracted Text Preview:</h4>
+      <pre id="ocr-extracted-text"></pre>
+      <div class="ocr-actions">
+        <button class="btn btn-primary btn-sm" id="ocr-apply-btn">✅ Apply to Fields</button>
+        <button class="btn btn-ghost btn-sm" id="ocr-dismiss-btn">✕ Dismiss</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Split-Screen Builder Layout ── -->
+  <div class="builder-layout" role="main">
+
+    <!-- ════════════════════════════════════════════
+         LEFT PANEL — Input Forms (Editor)
+    ════════════════════════════════════════════ -->
+    <aside class="builder-editor glass-card" aria-label="Resume editor forms">
+
+      <!-- Section Navigation Tabs -->
+      <div class="editor-tabs" role="tablist" aria-label="Resume sections">
+        <button class="editor-tab active" role="tab" data-section="personal" aria-selected="true">👤 Personal</button>
+        <button class="editor-tab" role="tab" data-section="experience" aria-selected="false">💼 Experience</button>
+        <button class="editor-tab" role="tab" data-section="education" aria-selected="false">🎓 Education</button>
+        <button class="editor-tab" role="tab" data-section="projects" aria-selected="false">🚀 Projects</button>
+        <button class="editor-tab" role="tab" data-section="skills" aria-selected="false">🔧 Skills</button>
+      </div>
+
+      <!-- ── Personal Info Section ── -->
+      <section id="section-personal" class="editor-section active" aria-label="Personal information">
+        <h3 class="section-title">Personal Information</h3>
+
+        <div class="form-group">
+          <label for="inp-fullname">Full Name</label>
+          <input type="text" id="inp-fullname" data-field="fullName" placeholder="Kabeer Soomro" />
+        </div>
+        <div class="form-group">
+          <label for="inp-jobtitle">Job Title</label>
+          <input type="text" id="inp-jobtitle" data-field="jobTitle" placeholder="Full Stack Web Developer, Flutter App Developer" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inp-email">Email</label>
+            <input type="email" id="inp-email" data-field="email" placeholder="gkabeersoomro@gmail.com" />
+          </div>
+          <div class="form-group">
+            <label for="inp-phone">Phone</label>
+            <input type="tel" id="inp-phone" data-field="phone" placeholder="+923168465697" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inp-location">Location</label>
+          <input type="text" id="inp-location" data-field="location" placeholder="Karachi" />
+        </div>
+
+        <div class="form-group">
+          <label for="inp-summary">Professional Summary</label>
+          <textarea id="inp-summary" data-field="summary" rows="4" placeholder="A brief compelling description of your skills and career goals..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Profile Photo</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="url" id="inp-avatar" data-field="avatarUrl" placeholder="https://your-photo.com/me.jpg" style="flex: 1;" />
+            <input type="file" id="inp-avatar-file" accept="image/*" style="display:none" />
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('inp-avatar-file').click()" style="white-space: nowrap;">Upload Image</button>
+          </div>
+        </div>
+
+        <h4 class="subsection-title">Social Links</h4>
+        <div class="form-group">
+          <label for="inp-github">GitHub</label>
+          <input type="url" id="inp-github" data-field="social.github" placeholder="https://github.com/KabirSoomro" />
+        </div>
+        <div class="form-group">
+          <label for="inp-linkedin">LinkedIn</label>
+          <input type="url" id="inp-linkedin" data-field="social.linkedin" placeholder="https://www.linkedin.com/in/kabir-soomro" />
+        </div>
+        <div class="form-group">
+          <label for="inp-twitter">Twitter/X</label>
+          <input type="url" id="inp-twitter" data-field="social.twitter" placeholder="https://twitter.com/username" />
+        </div>
+        <div class="form-group">
+          <label for="inp-website">Portfolio</label>
+          <input type="url" id="inp-website" data-field="social.website" placeholder="https://kabirsoomro.github.io/kabeerportfolio/" />
+        </div>
+        
+        <div style="margin-top: 2rem;">
+          <button type="button" class="btn btn-primary btn-full" onclick="document.querySelector('[data-section=\'experience\']').click()">Next: Work Experience ➔</button>
+        </div>
+      </section>
+
+      <!-- ── Experience Section ── -->
+      <section id="section-experience" class="editor-section" aria-label="Work experience">
+        <div class="section-header-flex">
+          <h3 class="section-title">Work Experience</h3>
+          <button class="btn btn-secondary btn-sm" id="add-experience-btn">+ Add Entry</button>
+        </div>
+        <!-- I inject experience blocks dynamically with builder.js -->
+        <div id="experience-list" class="dynamic-list"></div>
+        
+        <div style="margin-top: 2rem;">
+          <button type="button" class="btn btn-primary btn-full" onclick="document.querySelector('[data-section=\'education\']').click()">Next: Education ➔</button>
+        </div>
+      </section>
+
+      <!-- ── Education Section ── -->
+      <section id="section-education" class="editor-section" aria-label="Education">
+        <div class="section-header-flex">
+          <h3 class="section-title">Education</h3>
+          <button class="btn btn-secondary btn-sm" id="add-education-btn">+ Add Entry</button>
+        </div>
+        <div id="education-list" class="dynamic-list"></div>
+        
+        <div style="margin-top: 2rem;">
+          <button type="button" class="btn btn-primary btn-full" onclick="document.querySelector('[data-section=\'projects\']').click()">Next: Projects ➔</button>
+        </div>
+      </section>
+
+      <!-- ── Projects Section ── -->
+      <section id="section-projects" class="editor-section" aria-label="Projects">
+        <div class="section-header-flex">
+          <h3 class="section-title">Projects</h3>
+          <button class="btn btn-secondary btn-sm" id="add-project-btn">+ Add Project</button>
+        </div>
+        <div id="projects-list" class="dynamic-list"></div>
+        
+        <div style="margin-top: 2rem;">
+          <button type="button" class="btn btn-primary btn-full" onclick="document.querySelector('[data-section=\'skills\']').click()">Next: Skills ➔</button>
+        </div>
+      </section>
+
+      <!-- ── Skills Section ── -->
+      <section id="section-skills" class="editor-section" aria-label="Skills and tech stack">
+        <h3 class="section-title">Tech Stack & Skills</h3>
+
+        <div class="form-group">
+          <label for="skill-input">Add a Skill</label>
+          <div class="skill-input-row" style="position: relative;">
+            <input type="text" id="skill-input" placeholder="e.g. React, Node.js, Python" autocomplete="off" />
+            <div id="autocomplete-list" class="autocomplete-items"></div>
+            <button class="btn btn-secondary btn-sm" id="add-skill-btn">Add</button>
+          </div>
+          <p class="hint-text">Press Enter or click Add to insert each skill as a pill.</p>
+        </div>
+
+        <!-- I render skill pills here with builder.js -->
+        <div id="skills-pills-container" class="skills-pills" aria-label="Added skills" aria-live="polite"></div>
+      </section>
+
+    </aside><!-- /.builder-editor -->
+
+    <!-- ════════════════════════════════════════════
+         RIGHT PANEL — Live Preview (Canvas)
+    ════════════════════════════════════════════ -->
+    <main class="builder-preview" aria-label="Live resume preview">
+      <div class="preview-wrapper">
+
+        <!-- The #resume-preview div is what html2pdf.js converts to PDF.
+             I keep it self-contained with its own classes so it renders
+             identically on screen and in the exported PDF. -->
+        <div id="resume-preview" class="resume-paper template-modern">
+
+          <!-- ── Preview: Avatar ── -->
+          <div class="prev-avatar-container">
+            <div class="preview-avatar-wrap">
+              <img id="prev-avatar" src="" alt="Profile photo" class="preview-avatar" hidden />
+              <div id="prev-avatar-initials" class="preview-avatar-initials"></div>
+            </div>
+          </div>
+
+          <!-- ── Preview: Identity (Name & Title) ── -->
+          <div class="prev-identity">
+            <h1 id="prev-fullname" class="preview-name">Kabeer Soomro</h1>
+            <p id="prev-jobtitle" class="preview-job-title">Full Stack Web Developer, Flutter App Developer</p>
+          </div>
+
+          <!-- ── Preview: Contact Info ── -->
+          <div class="prev-contact">
+            <div class="preview-contact-row">
+              <span id="prev-email"></span>
+              <span class="sep" aria-hidden="true">·</span>
+              <span id="prev-phone"></span>
+              <span class="sep" aria-hidden="true">·</span>
+              <span id="prev-location"></span>
+            </div>
+            <div class="preview-social-row" id="prev-social-row"></div>
+          </div>
+
+          <!-- ── Preview: Summary ── -->
+          <section class="preview-section prev-summary-section" id="prev-summary-section" aria-label="Professional summary">
+            <h2 class="preview-section-title">Profile</h2>
+            <p id="prev-summary" class="preview-summary"></p>
+          </section>
+
+          <!-- ── Preview: Experience ── -->
+          <section class="preview-section prev-experience-section" id="prev-experience-section" aria-label="Experience">
+            <h2 class="preview-section-title">Experience</h2>
+            <div id="prev-experience-list"></div>
+          </section>
+
+          <!-- ── Preview: Education ── -->
+          <section class="preview-section prev-education-section" id="prev-education-section" aria-label="Education">
+            <h2 class="preview-section-title">Education</h2>
+            <div id="prev-education-list"></div>
+          </section>
+
+          <!-- ── Preview: Projects ── -->
+          <section class="preview-section prev-projects-section" id="prev-projects-section" aria-label="Projects">
+            <h2 class="preview-section-title">Projects</h2>
+            <div id="prev-projects-list"></div>
+          </section>
+
+          <!-- ── Preview: Skills ── -->
+          <section class="preview-section prev-skills-section" id="prev-skills-section" aria-label="Skills">
+            <h2 class="preview-section-title">Tech Stack</h2>
+            <div id="prev-skills-list" class="preview-tech-pills"></div>
+          </section>
+
+        </div><!-- /#resume-preview -->
+      </div><!-- /.preview-wrapper -->
+    </main><!-- /.builder-preview -->
+
+  </div><!-- /.builder-layout -->
+
+  <!-- ── Theme Color Picker Modal ── -->
+  <div id="theme-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="theme-modal-title" hidden>
+    <div class="modal-card glass-card">
+      <h3 id="theme-modal-title">🎨 Choose Theme Color</h3>
+      <div class="color-swatches" id="color-swatches" role="radiogroup" aria-label="Theme color options">
+        <button class="swatch" data-color="#6c63ff" style="background:#6c63ff" aria-label="Purple"></button>
+        <button class="swatch" data-color="#00d2ff" style="background:#00d2ff" aria-label="Cyan"></button>
+        <button class="swatch" data-color="#f64f59" style="background:#f64f59" aria-label="Red"></button>
+        <button class="swatch" data-color="#43e97b" style="background:#43e97b" aria-label="Green"></button>
+        <button class="swatch" data-color="#fa709a" style="background:#fa709a" aria-label="Pink"></button>
+        <button class="swatch" data-color="#ffc200" style="background:#ffc200" aria-label="Gold"></button>
+      </div>
+      <div class="form-group">
+        <label for="custom-color">Custom Color</label>
+        <input type="color" id="custom-color" value="#6c63ff" />
+      </div>
+      <button class="btn btn-primary" id="apply-theme-btn">Apply Theme</button>
+    </div>
+  </div>
+
+  <!-- Scripts — Order matters: api first, then builder, then feature modules -->
+  <script src="js/api.js"></script>
+  <script src="js/builder.js"></script>
+  <script src="js/ocr.js"></script>
+  <script src="js/pdf.js"></script>
+</body>
+</html>

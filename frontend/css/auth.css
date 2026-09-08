@@ -1,0 +1,193 @@
+/* ============================================================
+   auth.css — Landing / Authentication Page Styles
+   
+   I style the auth page independently from main.css to keep
+   concerns separated. This file handles the centered layout,
+   card appearance, tab switcher, and password strength bar.
+============================================================ */
+
+/* ── Auth Page Layout ────────────────────────────────────────── */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  animation: slide-up 0.6s cubic-bezier(0.4,0,0.2,1) both;
+}
+
+/* ── Brand Logo ──────────────────────────────────────────────── */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.brand-logo .logo-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 0 12px var(--color-accent));
+}
+
+/* ── Hero Text ───────────────────────────────────────────────── */
+.hero-text {
+  text-align: center;
+}
+
+.hero-text h1 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 40%, var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-sm);
+  letter-spacing: -0.03em;
+}
+
+.hero-text p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── Auth Card ───────────────────────────────────────────────── */
+.auth-card {
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  /* I add a subtle glow to the card border on load */
+  animation: pulse-glow 3s ease infinite;
+}
+
+/* ── Tab Switcher ────────────────────────────────────────────── */
+/* I use a sliding indicator pill instead of underlining to
+   give the tabs a modern, premium feel. */
+.auth-tabs {
+  display: flex;
+  position: relative;
+  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-xs);
+  gap: var(--space-xs);
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  z-index: 1;
+}
+
+.auth-tab.active {
+  color: var(--color-text);
+}
+
+/* Sliding background pill */
+.tab-indicator {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  height: calc(100% - var(--space-xs) * 2);
+  width: calc(50% - var(--space-xs));
+  background: linear-gradient(135deg, var(--color-accent), #8e89ff);
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition-normal);
+  pointer-events: none;
+}
+
+/* I shift the indicator right when the Register tab is active */
+.auth-tabs[data-active="register"] .tab-indicator {
+  transform: translateX(calc(100% + var(--space-xs)));
+}
+
+/* ── Auth Panels ─────────────────────────────────────────────── */
+.auth-panel {
+  display: none;
+  padding: var(--space-xl);
+  animation: fade-in 0.3s ease;
+}
+
+.auth-panel.active {
+  display: block;
+}
+
+/* ── Password Strength Bar ───────────────────────────────────── */
+.password-strength {
+  margin-top: calc(-1 * var(--space-sm));
+  margin-bottom: var(--space-md);
+}
+
+.strength-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal), background var(--transition-normal);
+}
+
+/* I colour the bar dynamically via JS by adding data attributes */
+.strength-fill[data-strength="weak"]   { background: var(--color-danger); width: 25%; }
+.strength-fill[data-strength="fair"]   { background: var(--color-warning); width: 50%; }
+.strength-fill[data-strength="good"]   { background: #3dd6f5; width: 75%; }
+.strength-fill[data-strength="strong"] { background: var(--color-success); width: 100%; }
+
+.strength-label {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+}
+
+/* ── Feature Pills ───────────────────────────────────────────── */
+.feature-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+.pill {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  backdrop-filter: blur(4px);
+  transition: all var(--transition-normal);
+}
+
+.pill:hover {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+  transform: translateY(-2px);
+}

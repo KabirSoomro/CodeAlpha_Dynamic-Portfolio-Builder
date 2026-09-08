@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       index.html — Landing / Authentication Page
+       I combined the marketing landing, login form, and register
+       form into a single page with tab switching in JavaScript.
+       This avoids an extra page load and feels like a modern SPA.
+  ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Meta Tags -->
+  <title>PortfolioAI — Next-Gen Dynamic Portfolio & Resume Builder</title>
+  <meta
+    name="description"
+    content="Build a stunning, ATS-friendly portfolio and resume in minutes. AI-powered OCR parsing, real-time preview, and one-click PDF export."
+  />
+  <meta name="keywords" content="portfolio builder, resume builder, AI resume, OCR resume parsing, PDF export" />
+  <meta name="author" content="PortfolioAI" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PortfolioAI — Build Your Dream Portfolio" />
+  <meta property="og:description" content="AI-powered portfolio and resume builder with live preview." />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <!-- Animated Background Orbs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ── Main Auth Container ── -->
+  <main class="auth-container" role="main">
+
+    <!-- Brand Logo -->
+    <div class="brand-logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">PortfolioAI</span>
+    </div>
+
+    <!-- Hero Headline -->
+    <div class="hero-text">
+      <h1>Build Your Dream Portfolio</h1>
+      <p>AI-powered • Real-time preview • ATS-optimized PDF export</p>
+    </div>
+
+    <!-- Auth Card (Glass) -->
+    <div class="auth-card glass-card" role="region" aria-label="Authentication">
+
+      <!-- Tab Switcher -->
+      <div class="auth-tabs" role="tablist">
+        <button
+          id="tab-login"
+          class="auth-tab active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-login"
+        >Login</button>
+        <button
+          id="tab-register"
+          class="auth-tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-register"
+        >Register</button>
+        <div class="tab-indicator" aria-hidden="true"></div>
+      </div>
+
+      <!-- ── Login Panel ── -->
+      <div id="panel-login" class="auth-panel active" role="tabpanel" aria-labelledby="tab-login">
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉</span>
+              <input
+                type="email"
+                id="login-email"
+                name="email"
+                placeholder="gkabeersoomro@gmail.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password"
+                id="login-password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+              <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="login-password">👁</button>
+            </div>
+          </div>
+
+          <!-- Error / Success Message -->
+          <div id="login-message" class="form-message" role="alert" aria-live="polite"></div>
+
+          <button type="submit" id="login-btn" class="btn btn-primary btn-full">
+            <span class="btn-text">Login to Dashboard</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+
+      <!-- ── Register Panel ── -->
+      <div id="panel-register" class="auth-panel" role="tabpanel" aria-labelledby="tab-register">
+        <form id="register-form" novalidate>
+          <div class="form-group">
+            <label for="reg-name">Full Name</label>
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+              <input
+                type="text"
+                id="reg-name"
+                name="name"
+                placeholder="Kabeer Soomro"
+                autocomplete="name"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉</span>
+              <input
+                type="email"
+                id="reg-email"
+                name="email"
+                placeholder="gkabeersoomro@gmail.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password <small>(min. 6 characters)</small></label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password"
+                id="reg-password"
+                name="password"
+                placeholder="Create a strong password"
+                autocomplete="new-password"
+                required
+              />
+              <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="reg-password">👁</button>
+            </div>
+          </div>
+
+          <!-- Password Strength Indicator -->
+          <div class="password-strength" id="password-strength" aria-label="Password strength">
+            <div class="strength-bar">
+              <div class="strength-fill" id="strength-fill"></div>
+            </div>
+            <span class="strength-label" id="strength-label">Enter a password</span>
+          </div>
+
+          <div id="register-message" class="form-message" role="alert" aria-live="polite"></div>
+
+          <button type="submit" id="register-btn" class="btn btn-primary btn-full">
+            <span class="btn-text">Create My Account</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+
+    </div><!-- /.auth-card -->
+
+    <!-- Feature Pills -->
+    <div class="feature-pills" aria-label="Key features">
+      <span class="pill">🤖 OCR Resume Parsing</span>
+      <span class="pill">⚡ Real-Time Preview</span>
+      <span class="pill">📄 PDF Export</span>
+      <span class="pill">🔐 JWT Secured</span>
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

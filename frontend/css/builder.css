@@ -1,0 +1,870 @@
+/* ============================================================
+   builder.css — Split-Screen Resume Builder Styles
+   
+   I implement the core two-column layout here:
+   Left  = glass editor panel (scrollable)
+   Right = sticky white "paper" preview (ATS-compatible)
+   
+   The preview deliberately uses a white background with dark
+   text because it must look correct when printed to PDF.
+   I intentionally break from the dark glass theme there.
+============================================================ */
+
+/* ── Builder Page Shell ──────────────────────────────────────── */
+.builder-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Builder Navbar ──────────────────────────────────────────── */
+.builder-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-lg);
+  margin: var(--space-sm);
+  margin-bottom: 0;
+  border-radius: var(--radius-md);
+  position: sticky;
+  top: var(--space-sm);
+  z-index: 200;
+  gap: var(--space-md);
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+
+.nav-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-brand-small {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Auto-Save Indicator ─────────────────────────────────────── */
+.autosave-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.save-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
+  transition: all var(--transition-normal);
+}
+
+.save-dot.saving {
+  background: var(--color-warning);
+  box-shadow: 0 0 6px var(--color-warning);
+  animation: pulse-dot 1s ease infinite;
+}
+
+.save-dot.error {
+  background: var(--color-danger);
+  box-shadow: 0 0 6px var(--color-danger);
+}
+
+@keyframes pulse-dot {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+/* ── OCR Banner ──────────────────────────────────────────────── */
+.ocr-banner {
+  margin: var(--space-sm);
+  padding: var(--space-lg) var(--space-xl);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-accent);
+  transition: all var(--transition-normal);
+}
+
+.ocr-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.ocr-icon {
+  font-size: 2.5rem;
+  animation: spin-slow 8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ocr-text h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.ocr-text p {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+/* OCR Progress */
+.ocr-progress {
+  margin-top: var(--space-md);
+}
+
+.ocr-progress-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.ocr-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-info));
+  border-radius: var(--radius-full);
+  width: 0%;
+  transition: width 0.3s ease;
+  animation: progress-shimmer 1.5s linear infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes progress-shimmer {
+  0% {
+    background-position: 200% center;
+  }
+
+  100% {
+    background-position: -200% center;
+  }
+}
+
+#ocr-progress-text {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* OCR Result */
+.ocr-result {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.ocr-result h4 {
+  font-size: 0.85rem;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text-muted);
+}
+
+#ocr-extracted-text {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  white-space: pre-wrap;
+  max-height: 160px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  margin-bottom: var(--space-sm);
+}
+
+.ocr-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* ── Split-Screen Layout ─────────────────────────────────────── */
+.builder-layout {
+  display: grid;
+  /* I allocate 42% to the editor and 58% to the preview.
+     This gives the preview enough room to render A4-proportioned
+     content without horizontal scrolling on most screens. */
+  grid-template-columns: 42% 1fr;
+  flex: 1;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Editor Panel (Left) ─────────────────────────────────────── */
+.builder-editor {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  height: calc(100vh - 120px);
+  position: sticky;
+  top: calc(60px + var(--space-sm) * 2);
+}
+
+/* ── Editor Section Tabs ─────────────────────────────────────── */
+.editor-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 2px;
+  padding: var(--space-sm);
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+  scrollbar-width: none;
+  /* I hide the scrollbar on the tab bar */
+}
+
+.editor-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.editor-tab {
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-normal);
+}
+
+.editor-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+}
+
+.editor-tab.active {
+  background: linear-gradient(135deg, var(--color-accent), #8e89ff);
+  color: #fff;
+  box-shadow: 0 2px 10px var(--color-accent-glow);
+}
+
+/* ── Editor Sections (scrollable content) ────────────────────── */
+.editor-section {
+  display: none;
+  padding: var(--space-lg);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.editor-section.active {
+  display: block;
+  animation: fade-in 0.25s ease;
+}
+
+/* ── Dynamic List Items (Experience, Education, Projects) ────── */
+.dynamic-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* I style each dynamic entry as a nested glass card */
+.dynamic-entry {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  position: relative;
+  animation: slide-up 0.3s ease;
+  transition: border-color var(--transition-normal);
+}
+
+.dynamic-entry:hover {
+  border-color: var(--color-border-strong);
+}
+
+.dynamic-entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.dynamic-entry-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.remove-entry-btn {
+  background: none;
+  border: none;
+  color: var(--color-danger);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  opacity: 0.6;
+}
+
+.remove-entry-btn:hover {
+  opacity: 1;
+  background: rgba(246, 79, 89, 0.1);
+}
+
+/* ── Skills Pills Input ──────────────────────────────────────── */
+.skill-input-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.skill-input-row input {
+  flex: 1;
+}
+
+/* Custom Autocomplete Dropdown */
+.autocomplete-items {
+  position: absolute;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  margin-top: 4px;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.9rem;
+}
+
+.autocomplete-items div:hover {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+.autocomplete-active {
+  background-color: var(--color-accent) !important;
+  color: #fff !important;
+}
+
+.skills-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  min-height: 40px;
+}
+
+.skill-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: var(--color-accent-light);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  animation: fade-in 0.2s ease;
+}
+
+.skill-pill button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+
+.skill-pill button:hover {
+  opacity: 1;
+}
+
+/* ── Preview Panel (Right) ───────────────────────────────────── */
+/* ── Preview: Generic Elements ─────────────────────────────────── */
+.prev-avatar-container {
+  display: flex;
+}
+
+.preview-avatar,
+.preview-avatar-initials {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.preview-avatar-initials {
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.preview-name {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+}
+
+.preview-job-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  color: var(--color-accent);
+}
+
+.preview-contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.8rem;
+  align-items: center;
+}
+
+.preview-contact-row .sep {
+  opacity: 0.4;
+}
+
+.preview-social-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.preview-social-link {
+  font-size: 0.8rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ── TEMPLATES ───────────────────────────────────────────────── */
+
+/* 1. template-modern (Default) */
+.template-modern {
+  display: flex;
+  flex-direction: column;
+}
+
+.template-modern .prev-avatar-container,
+.template-modern .prev-identity,
+.template-modern .prev-contact {
+  padding: 0 32px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #8e89ff 100%);
+  color: #fff;
+}
+
+.template-modern .prev-avatar-container {
+  padding-top: 32px;
+}
+
+.template-modern .prev-contact {
+  padding-bottom: 32px;
+}
+
+.template-modern .preview-job-title {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.template-modern .preview-social-link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 2. template-sidebar (Screenshot style) */
+.template-sidebar {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-areas:
+    "avatar identity"
+    "contact summary"
+    "skills experience"
+    "skills education"
+    "skills projects";
+}
+
+.template-sidebar .prev-avatar-container {
+  grid-area: avatar;
+  background: #112233;
+  padding: 32px 24px;
+  justify-content: center;
+}
+
+.template-sidebar .preview-avatar,
+.template-sidebar .preview-avatar-initials {
+  width: 120px;
+  height: 120px;
+}
+
+.template-sidebar .prev-contact {
+  grid-area: contact;
+  background: #112233;
+  color: #fff;
+  padding: 0 24px 24px;
+}
+
+.template-sidebar .preview-contact-row {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.template-sidebar .preview-contact-row .sep {
+  display: none;
+}
+
+.template-sidebar .preview-social-row {
+  flex-direction: column;
+}
+
+.template-sidebar .preview-social-link {
+  color: #fff;
+}
+
+.template-sidebar .prev-skills-section {
+  grid-area: skills;
+  background: #112233;
+  color: #fff;
+  padding: 0 24px 32px;
+}
+
+.template-sidebar .prev-skills-section .preview-section-title {
+  color: #fff;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.template-sidebar .prev-skills-section .preview-tech-pill {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.template-sidebar .prev-identity {
+  grid-area: identity;
+  padding: 32px 32px 16px;
+}
+
+.template-sidebar .prev-summary-section {
+  grid-area: summary;
+  padding: 0 32px;
+}
+
+.template-sidebar .prev-experience-section {
+  grid-area: experience;
+  padding: 0 32px;
+}
+
+.template-sidebar .prev-education-section {
+  grid-area: education;
+  padding: 0 32px;
+}
+
+.template-sidebar .prev-projects-section {
+  grid-area: projects;
+  padding: 0 32px 32px;
+}
+
+/* 3. template-minimal */
+.template-minimal {
+  padding: 40px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.template-minimal .preview-section-title {
+  border-bottom: none;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  color: #888;
+}
+
+.template-minimal .prev-avatar-container {
+  display: none;
+}
+
+/* 4. template-executive */
+.template-executive {
+  padding: 40px;
+  font-family: 'Georgia', serif;
+}
+
+.template-executive .prev-identity {
+  text-align: center;
+}
+
+.template-executive .prev-contact {
+  justify-content: center;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.template-executive .preview-contact-row,
+.template-executive .preview-social-row {
+  justify-content: center;
+}
+
+.template-executive .preview-section-title {
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+  border-bottom: 1px solid #333;
+}
+
+/* 5. template-creative */
+.template-creative {
+  padding: 40px;
+}
+
+.template-creative .prev-identity {
+  border-left: 8px solid var(--color-accent);
+  padding-left: 16px;
+  margin-bottom: 24px;
+}
+
+.template-creative .preview-name {
+  font-size: 2.5rem;
+  color: var(--color-accent);
+}
+
+.template-creative .preview-section-title {
+  background: var(--color-accent);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* 6. template-tech */
+.template-tech {
+  background: #fdfdfd;
+  padding: 40px;
+  font-family: var(--font-mono);
+}
+
+.template-tech .preview-name {
+  font-family: var(--font-mono);
+}
+
+.template-tech .preview-section-title {
+  font-family: var(--font-mono);
+  border-bottom: 2px dashed #ccc;
+}
+
+.template-tech .preview-tech-pill {
+  border-radius: 0;
+  border: 1px solid #333;
+  background: #eee;
+  color: #333;
+}
+
+.builder-preview {
+  overflow-y: auto;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+  height: calc(100vh - 120px);
+}
+
+.preview-wrapper {
+  padding: var(--space-lg);
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
+}
+
+/* ── Resume Paper ────────────────────────────────────────────── */
+/* I deliberately use white background and dark text here so the
+   PDF export looks exactly like a professional printed resume.
+   The preview matches the PDF output 1:1 — no surprises. */
+.resume-paper {
+  background: #ffffff;
+  color: #1a1a2e;
+  width: 100%;
+  max-width: 720px;
+  min-height: 900px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), var(--shadow-glow);
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* ── Preview: Body Sections ──────────────────────────────────── */
+.preview-section {
+  padding: 20px 32px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.preview-section:last-child {
+  border-bottom: none;
+}
+
+.preview-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: 6px;
+  margin-bottom: 14px;
+}
+
+.preview-summary {
+  color: #444;
+  font-size: 0.85rem;
+  line-height: 1.75;
+}
+
+/* ── Preview: Experience & Education Items ───────────────────── */
+.preview-item {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.preview-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.preview-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.preview-item-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+}
+
+.preview-item-subtitle {
+  font-size: 0.82rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.preview-item-date {
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.preview-item-desc {
+  font-size: 0.82rem;
+  color: #666;
+  line-height: 1.7;
+  margin-top: 6px;
+}
+
+/* ── Preview: Projects ───────────────────────────────────────── */
+.preview-project-links {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.preview-project-links a {
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+/* ── Preview: Tech Stack Pills ───────────────────────────────── */
+.preview-tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preview-tech-pill {
+  padding: 4px 12px;
+  background: #f0eeff;
+  border: 1px solid rgba(108, 99, 255, 0.2);
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* I hide empty preview sections so the PDF doesn't have blank
+   sections if the user hasn't filled them in yet. */
+.preview-section.empty {
+  display: none;
+}
+
+/* ── Responsive: Mobile Builder ──────────────────────────────── */
+@media (max-width: 900px) {
+  .builder-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    overflow: visible;
+  }
+
+  .builder-editor,
+  .builder-preview {
+    height: auto;
+    position: static;
+  }
+}

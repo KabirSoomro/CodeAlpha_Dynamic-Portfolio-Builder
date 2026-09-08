@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       dashboard.html — User Dashboard
+       I show a summary of the user's portfolio, quick stats,
+       and navigation buttons from here. This is the first page
+       the user lands on after logging in.
+  ============================================================ -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — PortfolioAI</title>
+  <meta name="description" content="Manage and preview your portfolio and resume from your personal dashboard." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="dashboard-page">
+
+  <!-- Animated Background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar glass-card" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">PortfolioAI</span>
+    </div>
+    <div class="nav-actions">
+      <span class="nav-user-greeting">Hello, <strong id="user-name-nav">...</strong></span>
+      <button id="logout-btn" class="btn btn-ghost btn-sm" aria-label="Logout">
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Dashboard Main Content ── -->
+  <main class="dashboard-main" role="main">
+
+    <!-- Welcome Header -->
+    <header class="dashboard-header">
+      <div>
+        <h1 id="welcome-heading">Welcome back! 👋</h1>
+        <p class="subtitle">Your portfolio is ready to impress. Keep it updated!</p>
+      </div>
+      <a href="builder.html" class="btn btn-primary" id="open-builder-btn">
+        <span>✏️</span> Open Builder
+      </a>
+    </header>
+
+    <!-- ── Stats Cards ── -->
+    <section class="stats-grid" aria-label="Portfolio statistics">
+
+      <article class="stat-card glass-card" aria-label="Completion status">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <span class="stat-value" id="completion-percent">0%</span>
+          <span class="stat-label">Profile Complete</span>
+        </div>
+        <div class="stat-bar">
+          <div class="stat-bar-fill" id="completion-bar" style="width: 0%"></div>
+        </div>
+      </article>
+
+      <a href="builder.html?tab=experience" style="text-decoration: none;">
+        <article class="stat-card glass-card" aria-label="Experience entries">
+          <div class="stat-icon">💼</div>
+          <div class="stat-info">
+            <span class="stat-value" id="exp-count">0</span>
+            <span class="stat-label">Experience Entries</span>
+          </div>
+        </article>
+      </a>
+
+      <a href="builder.html?tab=education" style="text-decoration: none;">
+        <article class="stat-card glass-card" aria-label="Education entries">
+          <div class="stat-icon">🎓</div>
+          <div class="stat-info">
+            <span class="stat-value" id="edu-count">0</span>
+            <span class="stat-label">Education Entries</span>
+          </div>
+        </article>
+      </a>
+
+      <a href="builder.html?tab=projects" style="text-decoration: none;">
+        <article class="stat-card glass-card" aria-label="Projects">
+          <div class="stat-icon">🚀</div>
+          <div class="stat-info">
+            <span class="stat-value" id="proj-count">0</span>
+            <span class="stat-label">Projects</span>
+          </div>
+        </article>
+      </a>
+
+    </section>
+
+    <!-- ── Portfolio Preview Card ── -->
+    <section class="preview-section">
+      <div class="section-header">
+        <h2>Portfolio Snapshot</h2>
+        <a href="builder.html" class="btn btn-ghost btn-sm">Edit →</a>
+      </div>
+
+      <div class="snapshot-card glass-card" id="snapshot-card">
+        <!-- I populate this dynamically from dashboard.js -->
+        <div class="snapshot-placeholder" id="snapshot-placeholder">
+          <div class="placeholder-icon">📄</div>
+          <p>Your portfolio is empty.</p>
+          <a href="builder.html" class="btn btn-primary btn-sm">Start Building</a>
+        </div>
+
+        <!-- Populated state (hidden until data loads) -->
+        <div class="snapshot-content" id="snapshot-content" hidden>
+          <div class="snapshot-header">
+            <div class="snapshot-avatar" id="snap-avatar">
+              <span id="snap-avatar-initials"></span>
+            </div>
+            <div class="snapshot-identity">
+              <h3 id="snap-name"></h3>
+              <p id="snap-job-title" class="accent-text"></p>
+              <p id="snap-email" class="muted-text"></p>
+            </div>
+          </div>
+          <p class="snapshot-summary" id="snap-summary"></p>
+          <div class="tech-pills" id="snap-tech"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Quick Actions ── -->
+    <section class="quick-actions" aria-label="Quick actions">
+      <h2>Quick Actions</h2>
+      <div class="actions-grid">
+
+        <a href="builder.html" class="action-card glass-card" id="action-builder">
+          <div class="action-icon">✏️</div>
+          <h3>Resume Builder</h3>
+          <p>Edit your resume with live preview</p>
+        </a>
+
+        <button class="action-card glass-card" id="action-download" aria-label="Download PDF">
+          <div class="action-icon">📄</div>
+          <h3>Download PDF</h3>
+          <p>Export ATS-friendly resume</p>
+        </button>
+
+        <button class="action-card glass-card" id="action-delete" aria-label="Delete portfolio">
+          <div class="action-icon">🗑️</div>
+          <h3>Reset Portfolio</h3>
+          <p>Start fresh with a clean slate</p>
+        </button>
+
+      </div>
+    </section>
+
+  </main><!-- /main -->
+
+  <!-- ── Delete Confirmation Modal ── -->
+  <div id="delete-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" hidden>
+    <div class="modal-card glass-card">
+      <h3 id="delete-modal-title">⚠️ Delete Portfolio?</h3>
+      <p>This action is permanent and cannot be undone. Your resume data will be lost.</p>
+      <div class="modal-actions">
+        <button id="confirm-delete-btn" class="btn btn-danger">Yes, Delete It</button>
+        <button id="cancel-delete-btn" class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

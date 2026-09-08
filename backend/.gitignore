@@ -1,0 +1,21 @@
+# ── Node / npm ────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Environment Variables ─────────────────────────────────────
+# I never commit .env — only .env.example goes to the repo.
+.env
+
+# ── OS Artifacts ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── IDE ───────────────────────────────────────────────────────
+.vscode/
+.idea/
+
+# ── Logs ──────────────────────────────────────────────────────
+logs/
+*.log
