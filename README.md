@@ -9,7 +9,7 @@ A **production-ready, full-stack** Portfolio & Resume Builder with Glassmorphic 
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Visit%20Now-6366f1?style=for-the-badge&logo=vercel&logoColor=white)](https://code-alpha-dynamic-portfolio-builder.vercel.app)
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-Visit%20Now-6366f1?style=for-the-badge&logo=vercel&logoColor=white)](https://code-alpha-dynamic-portfolio-builde.vercel.app)
 [![Watch on YouTube](https://img.shields.io/badge/▶%20Watch%20on%20YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@KabeerSoomro)
 [![Watch on LinkedIn](https://img.shields.io/badge/👁%20Watch%20on%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kabir-soomro)
 
@@ -21,7 +21,7 @@ A **production-ready, full-stack** Portfolio & Resume Builder with Glassmorphic 
 
 <div align="center">
 
-> 🔗 **[Click here to open the Live App](https://code-alpha-dynamic-portfolio-builder.vercel.app)**
+> 🔗 **[Click here to open the Live App](https://code-alpha-dynamic-portfolio-builde.vercel.app)**
 
 | Page | Description |
 |------|-------------|
