@@ -3,21 +3,21 @@ const nodemailer = require('nodemailer');
 const sendEmail = async (options) => {
   // Create a reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: process.env.SMTP_PORT || 465,
-    secure: true, // true for 465, false for other ports
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // true for 465
     auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
   // Construct the email message
   const message = {
-    from: `${process.env.FROM_NAME || 'Portfolio Builder AI'} <${process.env.SMTP_EMAIL}>`,
+    from: `Portfolio Builder AI <${process.env.EMAIL_USER}>`,
     to: options.email,
     subject: options.subject,
-    html: options.html || options.message, // Support both plain text and HTML
+    html: options.html || options.message,
   };
 
   // Send the email
