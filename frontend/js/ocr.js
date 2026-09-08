@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // I validate that the file is an image before running OCR
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file (JPG, PNG, WEBP, etc.)');
+    // I validate that the file is an image or PDF before running parsing
+    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
+      alert('Please upload an image (JPG, PNG) or a PDF file.');
       return;
     }
 
@@ -47,35 +47,53 @@ document.addEventListener('DOMContentLoaded', () => {
     ocrProgress.hidden  = false;
     ocrResult.hidden    = true;
     progressFill.style.width = '0%';
-    progressText.textContent = '🔍 Loading OCR engine...';
+    progressText.textContent = file.type === 'application/pdf' ? '📄 Reading PDF...' : '🔍 Loading OCR engine...';
 
     try {
-      // I use Tesseract.js v5 API — createWorker() returns a
-      // worker that handles loading, initialisation, and recognition.
-      const worker = await Tesseract.createWorker('eng', 1, {
-        // I hook the logger to update my progress bar in real-time
-        logger: (log) => {
-          if (log.status === 'recognizing text') {
-            const percent = Math.round(log.progress * 100);
-            progressFill.style.width = `${percent}%`;
-            progressText.textContent = `🧠 Recognising text... ${percent}%`;
-          } else {
-            progressText.textContent = `⚙️ ${log.status}`;
-          }
-        },
-      });
+      if (file.type === 'application/pdf') {
+        // === PDF Parsing Logic ===
+        progressFill.style.width = '30%';
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let fullText = '';
+        
+        progressFill.style.width = '60%';
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          // Extract and join text items
+          const pageText = textContent.items.map(item => item.str).join(' ');
+          fullText += pageText + '\n';
+        }
+        
+        rawExtractedText = fullText.trim();
+        
+        if (!rawExtractedText) {
+          throw new Error('No text found in PDF. If this is a scanned document, please upload it as an image instead.');
+        }
+      } else {
+        // === Image OCR Logic ===
+        const worker = await Tesseract.createWorker('eng', 1, {
+          logger: (log) => {
+            if (log.status === 'recognizing text') {
+              const percent = Math.round(log.progress * 100);
+              progressFill.style.width = `${percent}%`;
+              progressText.textContent = `🧠 Recognising text... ${percent}%`;
+            } else {
+              progressText.textContent = `⚙️ ${log.status}`;
+            }
+          },
+        });
 
-      // I run OCR on the uploaded image file
-      const { data: { text } } = await worker.recognize(file);
-      await worker.terminate(); // I release the worker after use to free memory
+        const { data: { text } } = await worker.recognize(file);
+        await worker.terminate();
+        rawExtractedText = text.trim();
+      }
 
-      rawExtractedText = text.trim();
-
-      // I show the extracted text in a preview area so the user
-      // can verify it before applying it to the form fields.
+      // Show the extracted text in a preview area
       progressFill.style.width    = '100%';
-      progressText.textContent    = '✅ OCR Complete!';
-      extractedText.textContent   = rawExtractedText || '(No text detected in image)';
+      progressText.textContent    = '✅ Import Complete!';
+      extractedText.textContent   = rawExtractedText || '(No text detected)';
 
       setTimeout(() => {
         ocrProgress.hidden = true;
@@ -83,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 600);
 
     } catch (err) {
-      console.error('[OCR] Tesseract error:', err);
-      progressText.textContent = '❌ OCR failed. Please try a clearer image.';
+      console.error('[Import] parsing error:', err);
+      progressText.textContent = `❌ Import failed: ${err.message || 'Please try a clearer file.'}`;
       ocrProgress.hidden = false;
     }
 

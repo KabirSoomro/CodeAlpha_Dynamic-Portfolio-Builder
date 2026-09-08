@@ -82,16 +82,16 @@
       <div class="ocr-icon" aria-hidden="true">🤖</div>
       <div class="ocr-text">
         <h2>AI Resume Import</h2>
-        <p>Upload a photo or screenshot of your old resume — I'll extract the text and fill your fields automatically.</p>
+        <p>Upload a PDF, photo or screenshot of your old resume — I'll extract the text and fill your fields automatically.</p>
       </div>
       <label for="ocr-file-input" class="btn btn-secondary" id="ocr-upload-label">
-        📸 Upload Resume Image
+        📄 Upload Resume
       </label>
       <input
         type="file"
         id="ocr-file-input"
-        accept="image/*"
-        aria-label="Upload resume image for OCR parsing"
+        accept="image/*,application/pdf"
+        aria-label="Upload resume PDF or image for parsing"
         style="display:none"
       />
     </div>
@@ -354,7 +354,12 @@
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-  <script src="js/api.js?v=3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    // Configure worker source for pdf.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+  <script src="js/api.js?v=4"></script>
   <script src="js/builder.js?v=3"></script>
   <script src="js/ocr.js?v=3"></script>
   <script src="js/pdf.js?v=3"></script>
