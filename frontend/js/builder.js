@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const editorWrapper = document.querySelector('.builder-editor');
         if (editorWrapper) {
           editorWrapper.scrollTop = 0;
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo(0, 0);
         }
       }
     });
@@ -794,18 +794,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ── Handle Tab Navigation from URL ──
   const tabParam = urlParams.get('tab');
   if (tabParam) {
-    // Wait briefly for DOM/tabs to be ready, then click
-    setTimeout(() => {
-      const targetTab = document.querySelector(`.editor-tab[data-section="${tabParam}"]`);
-      if (targetTab) {
-        targetTab.click();
-        const editorWrapper = document.querySelector('.builder-editor');
-        if (editorWrapper) {
-          editorWrapper.scrollTop = 0;
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+    const targetTab = document.querySelector(`.editor-tab[data-section="${tabParam}"]`);
+    if (targetTab) {
+      targetTab.click();
+      const editorWrapper = document.querySelector('.builder-editor');
+      if (editorWrapper) {
+        editorWrapper.scrollTop = 0;
+        window.scrollTo(0, 0);
       }
-    }, 200);
+    }
   }
 
   // I expose the state and savePortfolio so ocr.js can call them
