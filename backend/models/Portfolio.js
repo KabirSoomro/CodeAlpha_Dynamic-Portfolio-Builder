@@ -104,12 +104,4 @@ const PortfolioSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// ── Compound Index ────────────────────────────────────────────
-// I index by user so all portfolio fetch queries by owner ID
-// hit the index rather than scanning the full collection.
-PortfolioSchema.index({ user: 1 });
-
-// I also index publicSlug for the future shareable link feature.
-PortfolioSchema.index({ publicSlug: 1 }, { sparse: true });
-
 module.exports = mongoose.model('Portfolio', PortfolioSchema);

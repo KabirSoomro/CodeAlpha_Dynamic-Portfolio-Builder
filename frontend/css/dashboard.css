@@ -33,24 +33,37 @@
   color: var(--color-text);
 }
 
-/* ── Settings Modal ────────────────────────────────────────────── */
+/* ── Modals & Overlays (Settings & Delete Confirmation) ────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
+  animation: none;
   transition: opacity var(--transition-fast), visibility var(--transition-fast);
 }
 
-.modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
+.modal-overlay[hidden],
+.modal-overlay[aria-hidden="true"]:not(.active) {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.modal-overlay.active,
+.modal-overlay:not([hidden]):not([aria-hidden="true"]) {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 .modal-content {
@@ -62,7 +75,19 @@
   transition: transform var(--transition-normal);
 }
 
-.modal-overlay.active .modal-content {
+.modal-card {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-xl);
+  text-align: center;
+  transform: scale(0.95) translateY(20px);
+  transition: transform var(--transition-normal);
+}
+
+.modal-overlay.active .modal-content,
+.modal-overlay.active .modal-card,
+.modal-overlay:not([hidden]):not([aria-hidden="true"]) .modal-content,
+.modal-overlay:not([hidden]):not([aria-hidden="true"]) .modal-card {
   transform: scale(1) translateY(0);
 }
 
@@ -364,12 +389,16 @@
   line-height: 1;
 }
 
-.action-card h3 {
+.action-card h3,
+.action-card .action-title {
+  display: block;
   font-size: 0.95rem;
   font-weight: 700;
 }
 
-.action-card p {
+.action-card p,
+.action-card .action-desc {
+  display: block;
   font-size: 0.78rem;
   color: var(--color-text-muted);
   line-height: 1.5;

@@ -166,13 +166,13 @@
           <p>Edit your resume with live preview</p>
         </a>
 
-        <button class="action-card glass-card" id="action-download" aria-label="Download YOUR CV">
+        <button type="button" class="action-card glass-card" id="action-download" aria-label="Download YOUR CV">
           <div class="action-icon">📄</div>
           <h3>Download YOUR CV</h3>
           <p>Export ATS-friendly resume</p>
         </button>
 
-        <button class="action-card glass-card" id="action-delete" aria-label="Delete portfolio">
+        <button type="button" class="action-card glass-card" id="action-delete" aria-label="Delete portfolio">
           <div class="action-icon">🗑️</div>
           <h3>Reset Portfolio</h3>
           <p>Start fresh with a clean slate</p>
@@ -184,7 +184,7 @@
   </main><!-- /main -->
 
   <!-- ── Delete Confirmation Modal ── -->
-  <div id="delete-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" hidden>
+  <div id="delete-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" aria-hidden="true" hidden>
     <div class="modal-card glass-card">
       <h3 id="delete-modal-title">⚠️ Delete Portfolio?</h3>
       <p>This action is permanent and cannot be undone. Your resume data will be lost.</p>
@@ -196,10 +196,10 @@
   </div>
 
   <!-- ── Settings Modal ── -->
-  <div class="modal-overlay" id="settings-modal" aria-hidden="true">
+  <div class="modal-overlay" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title" aria-hidden="true" hidden>
     <div class="modal-content glass-card" style="max-height: 90vh; overflow-y: auto;">
       <div class="modal-header">
-        <h2>Profile & Security</h2>
+        <h2 id="settings-modal-title">Profile & Security</h2>
         <button class="close-modal-btn" id="close-settings-btn" aria-label="Close modal">×</button>
       </div>
       <div class="modal-body">
@@ -219,12 +219,12 @@
           
           <div class="form-group">
             <label for="settings-name">Full Name</label>
-            <input type="text" id="settings-name" class="form-input" required>
+            <input type="text" id="settings-name" class="form-input" required autocomplete="name">
           </div>
           
           <div class="form-group">
             <label for="settings-email">Email Address</label>
-            <input type="email" id="settings-email" class="form-input" required>
+            <input type="email" id="settings-email" class="form-input" required autocomplete="email">
           </div>
           
           <div id="settings-message" class="form-message"></div>
@@ -239,15 +239,15 @@
         <form id="password-form">
           <div class="form-group">
             <label for="current-password">Current Password</label>
-            <input type="password" id="current-password" class="form-input" required>
+            <input type="password" id="current-password" class="form-input" required autocomplete="current-password">
           </div>
           <div class="form-group">
             <label for="new-password">New Password</label>
-            <input type="password" id="new-password" class="form-input" minlength="6" required>
+            <input type="password" id="new-password" class="form-input" minlength="6" required autocomplete="new-password">
           </div>
           <div class="form-group">
             <label for="confirm-password">Confirm New Password</label>
-            <input type="password" id="confirm-password" class="form-input" required>
+            <input type="password" id="confirm-password" class="form-input" required autocomplete="new-password">
           </div>
           
           <div id="password-message" class="form-message"></div>
@@ -279,8 +279,8 @@
   <!-- Scripts -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script src="js/api.js?v=7"></script>
-  <script src="js/dashboard.js"></script>
-  <script src="js/settings.js?v=2"></script>
+  <script src="js/dashboard.js?v=2"></script>
+  <script src="js/settings.js?v=3"></script>
   <script src="js/contact.js?v=6"></script>
 </body>
 </html>

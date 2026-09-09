@@ -159,19 +159,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // ── Delete Portfolio (Modal) ──────────────────────────────────
-  actionDelete.addEventListener('click', () => {
+  const showDeleteModal = () => {
     deleteModal.hidden = false;
+    deleteModal.classList.add('active');
+    deleteModal.setAttribute('aria-hidden', 'false');
     // I trap focus in the modal for accessibility
     confirmDeleteBtn.focus();
-  });
+  };
 
-  cancelDeleteBtn.addEventListener('click', () => {
+  const hideDeleteModal = () => {
+    deleteModal.classList.remove('active');
+    deleteModal.setAttribute('aria-hidden', 'true');
     deleteModal.hidden = true;
+  };
+
+  actionDelete.addEventListener('click', showDeleteModal);
+  cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+
+  // Close modal on Escape key
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !deleteModal.hidden) {
+      hideDeleteModal();
+    }
   });
 
   // I close the modal if the user clicks the backdrop
   deleteModal.addEventListener('click', (e) => {
-    if (e.target === deleteModal) deleteModal.hidden = true;
+    if (e.target === deleteModal) hideDeleteModal();
   });
 
   confirmDeleteBtn.addEventListener('click', async () => {

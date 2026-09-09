@@ -101,9 +101,6 @@ UserSchema.methods.getResetPasswordToken = function () {
   return resetToken;
 };
 
-// ── Index ──────────────────────────────────────────────────────
-// I add an index on email because every login query filters by it.
-// Atlas will use this index to avoid a full collection scan.
-UserSchema.index({ email: 1 });
+
 
 module.exports = mongoose.model('User', UserSchema);

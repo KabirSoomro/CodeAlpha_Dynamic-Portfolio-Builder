@@ -272,7 +272,7 @@ const updateDetails = async (req, res, next) => {
     const fieldsToUpdate = {};
     if (req.body.name) fieldsToUpdate.name = req.body.name;
     if (req.body.email) fieldsToUpdate.email = req.body.email.toLowerCase();
-    if (req.body.avatar) fieldsToUpdate.avatar = req.body.avatar;
+    if (req.body.avatar !== undefined) fieldsToUpdate.avatar = req.body.avatar || '';
 
     const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
       new: true,
