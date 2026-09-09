@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — PortfolioAI</title>
+  <meta name="description" content="PortfolioAI Terms of Service. Understand your rights, acceptable use, and platform terms." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/main.css" />
+
+  <!-- Theme Controller -->
+  <script src="js/theme.js"></script>
+
+  <style>
+    .legal-page-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+    .legal-hero {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 40px 24px;
+      position: relative;
+    }
+    .legal-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: var(--color-accent);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .legal-hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--color-text);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .legal-hero p {
+      font-size: 1.05rem;
+      color: var(--color-text-muted);
+      max-width: 640px;
+      margin: 0 auto 24px;
+      line-height: 1.6;
+    }
+    .legal-actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .legal-toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+    }
+    .toc-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--color-text-muted);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+    .toc-chip:hover {
+      background: var(--color-accent);
+      color: #ffffff;
+      border-color: var(--color-accent);
+    }
+    .legal-card {
+      background: var(--color-surface);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-xl);
+      padding: clamp(24px, 4vw, 44px);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 30px;
+    }
+    .legal-section-block {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .legal-section-block:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .legal-section-block h2 {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .legal-section-block p {
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .legal-section-block ul {
+      margin: 0 0 16px 24px;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+    .legal-section-block li {
+      margin-bottom: 8px;
+    }
+    .legal-highlight-box {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 4px solid var(--color-accent);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 18px 0;
+      color: var(--color-text);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .navbar, .site-footer, .legal-actions-bar, .legal-toc, .bg-animations {
+        display: none !important;
+      }
+      .legal-card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+      .legal-section-block {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body class="legal-page">
+
+  <!-- Animated Background Orbs -->
+  <div class="bg-animations bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ── Navigation Bar ── -->
+  <nav class="navbar glass-card" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <a href="index.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">PortfolioAI</span>
+      </a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-ghost btn-sm theme-toggle-btn" aria-label="Toggle Theme">🌙</button>
+      <a href="privacy.html" class="btn btn-ghost btn-sm">Privacy Policy</a>
+      <a href="index.html" class="btn btn-primary btn-sm">Back to Home</a>
+    </div>
+  </nav>
+
+  <!-- ── Main Legal Container ── -->
+  <main class="legal-page-container" role="main">
+
+    <!-- Hero Header -->
+    <header class="legal-hero glass-card">
+      <div class="legal-hero-badge">📜 Terms of Agreement</div>
+      <h1>Terms of Service</h1>
+      <p>
+        Please review these Terms of Service carefully before utilizing PortfolioAI. They outline your legal rights, acceptable use, and platform policies.
+      </p>
+      <div class="legal-actions-bar">
+        <span style="color: var(--color-text-subtle); font-size: 0.88rem;">Effective Date: March 2026</span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.print();">
+          🖨️ Print / Save PDF
+        </button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="openContactModal();">
+          ✉️ Contact Support
+        </button>
+      </div>
+    </header>
+
+    <!-- Table of Contents Quick Links -->
+    <nav class="legal-toc" aria-label="Table of contents">
+      <a href="#section-1" class="toc-chip">1. Acceptance of Terms</a>
+      <a href="#section-2" class="toc-chip">2. Service Description</a>
+      <a href="#section-3" class="toc-chip">3. User Accounts</a>
+      <a href="#section-4" class="toc-chip">4. Intellectual Property</a>
+      <a href="#section-5" class="toc-chip">5. Acceptable Use</a>
+      <a href="#section-6" class="toc-chip">6. Warranties & Disclaimers</a>
+      <a href="#section-7" class="toc-chip">7. Limitation of Liability</a>
+      <a href="#section-8" class="toc-chip">8. Termination</a>
+      <a href="#section-9" class="toc-chip">9. Contact Us</a>
+    </nav>
+
+    <!-- Content Card -->
+    <article class="legal-card glass-card">
+
+      <section id="section-1" class="legal-section-block">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By creating an account, browsing the site, or utilizing our resume generation tools, you confirm that you are at least 13 years old, legally capable of entering into binding agreements, and that you accept all provisions set forth herein. If you do not agree to these terms, you must discontinue using PortfolioAI immediately.</p>
+      </section>
+
+      <section id="section-2" class="legal-section-block">
+        <h2>2. Description of the Service</h2>
+        <p>PortfolioAI provides an interactive digital suite enabling users to:</p>
+        <ul>
+          <li>Create, configure, and maintain real-time dynamic portfolio pages.</li>
+          <li>Import legacy resumes using AI OCR vision technologies.</li>
+          <li>Export ATS-friendly, cleanly formatted PDF resumes free of charge.</li>
+          <li>Reorder resume sections dynamically and personalize UI color palettes.</li>
+        </ul>
+      </section>
+
+      <section id="section-3" class="legal-section-block">
+        <h2>3. User Accounts & Security Responsibilities</h2>
+        <p>You must maintain accurate account information and safeguard your credentials:</p>
+        <ul>
+          <li>You agree to provide true and accurate profile information.</li>
+          <li>You are solely responsible for all activities occurring under your authenticated credentials.</li>
+          <li>You must notify us immediately if you detect any unauthorized access or breach of security.</li>
+        </ul>
+      </section>
+
+      <section id="section-4" class="legal-section-block">
+        <h2>4. Intellectual Property & Content Ownership</h2>
+        <ul>
+          <li><strong>Your Content:</strong> You retain 100% intellectual property ownership of all resumes, text descriptions, company references, and project artifacts you enter or generate. PortfolioAI claims no ownership over your career data.</li>
+          <li><strong>Platform License:</strong> You grant PortfolioAI a limited, non-exclusive license solely to host, render, and export your content to deliver the service.</li>
+          <li><strong>Platform Rights:</strong> All software architecture, design elements, animations, source code, and branding are the intellectual property of Kabeer Soomro and CodeAlpha. Unauthorized reproduction or commercial redistribution is strictly prohibited.</li>
+        </ul>
+        <div class="legal-highlight-box">
+          <strong>💼 You Own Your Career:</strong> We never assert ownership over your resume text or projects. What you build belongs entirely to you.
+        </div>
+      </section>
+
+      <section id="section-5" class="legal-section-block">
+        <h2>5. Acceptable Use Policy</h2>
+        <p>You agree not to use PortfolioAI for any unlawful or disruptive purpose, including:</p>
+        <ul>
+          <li>Uploading defamatory, deceptive, fraudulent, or infringing materials.</li>
+          <li>Attempting to probe, exploit, or bypass backend authentication guards or database constraints.</li>
+          <li>Deploying automated scrapers, crawlers, or load-testing bots without prior written permission.</li>
+          <li>Injecting cross-site scripting (XSS) or malicious code into resume fields or forms.</li>
+          <li>Impersonating any third-party individual or company.</li>
+        </ul>
+      </section>
+
+      <section id="section-6" class="legal-section-block">
+        <h2>6. Disclaimer of Warranties</h2>
+        <p>PortfolioAI is provided on an <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong> basis without warranties of any kind, whether express, statutory, or implied. While we strive for optimal ATS resume compatibility, high uptime, and bug-free execution, we do not warrant that:</p>
+        <ul>
+          <li>The service will always operate uninterrupted, error-free, or entirely secure.</li>
+          <li>The use of generated resumes will guarantee employment offers, interviews, or hiring outcomes.</li>
+        </ul>
+      </section>
+
+      <section id="section-7" class="legal-section-block">
+        <h2>7. Limitation of Liability</h2>
+        <p>To the fullest extent permitted by applicable law, Kabeer Soomro, CodeAlpha, and affiliated developers shall not be liable for any indirect, incidental, punitive, or consequential damages, loss of data, loss of career opportunities, or service interruptions arising out of your use or inability to use PortfolioAI.</p>
+      </section>
+
+      <section id="section-8" class="legal-section-block">
+        <h2>8. Termination & Account Erasure</h2>
+        <p>You may discontinue using PortfolioAI at any time. You can permanently wipe your portfolio records via the <em>Reset Portfolio</em> feature on your dashboard. We reserve the right to suspend or terminate accounts that breach these Terms or engage in abusive platform usage.</p>
+      </section>
+
+      <section id="section-9" class="legal-section-block">
+        <h2>9. Contact & Support</h2>
+        <p>For questions regarding these Terms of Service or to report violations, please contact us:</p>
+        <ul>
+          <li><strong>Developer:</strong> Kabeer Soomro</li>
+          <li><strong>Project:</strong> CodeAlpha Internship Project</li>
+          <li><strong>Email:</strong> <a href="mailto:gkabeersoomro@gmail.com" style="color: var(--color-accent);">gkabeersoomro@gmail.com</a></li>
+          <li><strong>Support:</strong> Use our in-app Contact Support dialog accessible from the footer of any page.</li>
+        </ul>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- ── Site Footer ── -->
+  <footer class="site-footer" style="margin-top: 40px;">
+    <div class="footer-content">
+      <p>&copy; 2026 PortfolioAI. Developed by <a href="https://www.linkedin.com/in/kabir-soomro" target="_blank">Kabeer Soomro</a> for CodeAlpha.</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="#" onclick="event.preventDefault(); openContactModal();">Contact Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="js/contact.js?v=6"></script>
+  <script src="js/legal-modals.js?v=1"></script>
+</body>
+</html>
